@@ -1,0 +1,3975 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0a0f1a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="FitScience Pro">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="FitScience Pro">
+    <meta name="description" content="Evidence-based workout planning and tracking">
+    <link rel="manifest" id="app-manifest">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect fill='%236366f1' width='192' height='192' rx='38'/%3E%3Ctext x='96' y='120' font-size='100' text-anchor='middle'%3E🏋️%3C/text%3E%3C/svg%3E">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect fill='%236366f1' width='32' height='32' rx='6'/%3E%3Ctext x='16' y='23' font-size='18' text-anchor='middle'%3E🏋️%3C/text%3E%3C/svg%3E">
+    <title>FitScience Pro - Evidence-Based Training</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: #0a0f1a;
+            color: #e2e8f0;
+            min-height: 100vh;
+            padding-bottom: 80px;
+        }
+        .container { max-width: 520px; margin: 0 auto; padding: 16px; }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 24px 0;
+            background: linear-gradient(135deg, #0ea5e9 0%, #6366f1 50%, #8b5cf6 100%);
+            border-radius: 0 0 24px 24px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            opacity: 0.3;
+        }
+        .header h1 { font-size: 1.6rem; font-weight: 800; position: relative; }
+        .header .subtitle { font-size: 0.85rem; opacity: 0.9; margin-top: 4px; position: relative; }
+        .header .badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            margin-top: 8px;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Cards */
+        .card {
+            background: #1e293b;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border: 1px solid #334155;
+            position: relative;
+            overflow: hidden;
+        }
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .card-title .icon { font-size: 1.4rem; }
+
+        /* Buttons */
+        .btn {
+            padding: 14px 24px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-family: inherit;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            width: 100%;
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(99,102,241,0.4); }
+        .btn-secondary {
+            background: #334155;
+            color: #e2e8f0;
+        }
+        .btn-success { background: #10b981; color: white; }
+        .btn-danger { background: #ef4444; color: white; }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #475569;
+            color: #e2e8f0;
+        }
+        .btn-small { padding: 8px 16px; font-size: 0.85rem; }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* Forms */
+        .form-group { margin-bottom: 16px; }
+        .form-label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #94a3b8;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #334155;
+            border-radius: 12px;
+            background: #0f172a;
+            color: #e2e8f0;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+            font-family: inherit;
+        }
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #6366f1;
+        }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .form-textarea { resize: vertical; min-height: 80px; }
+
+        /* Goal Cards */
+        .goal-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .goal-card {
+            padding: 20px;
+            border: 2px solid #334155;
+            border-radius: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #0f172a;
+        }
+        .goal-card:hover { border-color: #6366f1; }
+        .goal-card.selected {
+            border-color: #6366f1;
+            background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(139,92,246,0.2));
+            transform: scale(1.02);
+        }
+        .goal-card .emoji { font-size: 2rem; display: block; margin-bottom: 8px; }
+        .goal-card .name { font-weight: 600; font-size: 0.95rem; }
+        .goal-card .desc { font-size: 0.75rem; color: #94a3b8; margin-top: 4px; }
+
+        /* Plan Cards */
+        .plan-card {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            border: 1px solid #334155;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+        .plan-card:hover { border-color: #6366f1; transform: translateX(4px); }
+        .plan-card.active { border-color: #10b981; }
+        .plan-card .plan-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .plan-card .plan-name { font-weight: 700; font-size: 1.1rem; }
+        .plan-card .plan-tag {
+            background: #6366f1;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        .plan-card .plan-desc { color: #94a3b8; font-size: 0.85rem; margin-bottom: 12px; }
+        .plan-card .plan-meta {
+            display: flex;
+            gap: 16px;
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+        .plan-card .plan-meta span { display: flex; align-items: center; gap: 4px; }
+        .plan-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        .plan-actions .btn { flex: 1; font-size: 0.85rem; padding: 10px; }
+
+        /* Exercise Cards */
+        .exercise-card {
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            transition: all 0.2s;
+        }
+        .exercise-card:hover { border-color: #6366f1; }
+        .exercise-card.completed { border-color: #10b981; opacity: 0.7; }
+        .exercise-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+        .exercise-info { flex: 1; }
+        .exercise-name { font-weight: 700; font-size: 1.05rem; margin-bottom: 4px; }
+        .exercise-muscles {
+            font-size: 0.8rem;
+            color: #94a3b8;
+        }
+        .exercise-sets {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+        .set-badge {
+            background: #334155;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+        .set-badge:hover { border-color: #6366f1; }
+        .set-badge.completed { background: #10b981; color: white; }
+        .exercise-actions {
+            display: flex;
+            gap: 8px;
+        }
+        .exercise-actions .btn { flex: 1; font-size: 0.85rem; padding: 10px; }
+
+        /* Video Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-content {
+            background: #1e293b;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background: #1e293b;
+            z-index: 10;
+            border-radius: 20px 20px 0 0;
+        }
+        .modal-header h3 { font-size: 1.2rem; }
+        .modal-close {
+            background: none;
+            border: none;
+            color: #94a3b8;
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-close:hover { background: #334155; color: white; }
+        .modal-body { padding: 20px; }
+
+        /* Timer */
+        .timer-display {
+            font-size: 3.5rem;
+            font-weight: 700;
+            text-align: center;
+            font-variant-numeric: tabular-nums;
+            color: #0ea5e9;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            text-shadow: 0 0 20px rgba(14,165,233,0.3);
+        }
+        .timer-controls {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        .timer-btn {
+            width: 64px; height: 64px;
+            border-radius: 50%;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .timer-btn:hover { transform: scale(1.05); }
+        .timer-start { background: #10b981; color: white; }
+        .timer-pause { background: #f59e0b; color: white; }
+            .timer-reset { background: #475569; color: white; }
+
+        /* Rest Timer */
+        .rest-timer {
+            background: linear-gradient(135deg, rgba(245,158,11,0.12), rgba(239,68,68,0.12));
+            border: 1px solid rgba(245,158,11,0.25);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        .rest-timer .rest-label {
+            font-size: 0.85rem;
+            color: #f59e0b;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        .rest-timer .rest-time {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #f59e0b;
+            margin: 8px 0;
+        }
+        .rest-presets {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .rest-preset {
+            padding: 8px 16px;
+            border: 1px solid #475569;
+            border-radius: 20px;
+            background: #0f172a;
+            color: #e2e8f0;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .rest-preset:hover, .rest-preset.active {
+            border-color: #f59e0b;
+            background: rgba(245,158,11,0.1);
+            color: #f59e0b;
+        }
+
+        /* Progress Ring */
+        .progress-ring {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+            position: relative;
+        }
+        .progress-ring svg {
+            transform: rotate(-90deg);
+        }
+        .progress-ring-bg { stroke: #334155; }
+        .progress-ring-fill { stroke: #6366f1; transition: stroke-dashoffset 0.5s; }
+        .progress-text {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+        .progress-text .percent { font-size: 2rem; font-weight: 700; }
+        .progress-text .label { font-size: 0.8rem; color: #94a3b8; }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .stat-box {
+            background: #0f172a;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            border: 1px solid #334155;
+        }
+        .stat-box .value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #f8fafc;
+        }
+        .stat-box .label {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 4px;
+        }
+
+        /* Bottom Nav */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            background: #1e293b;
+            border-top: 1px solid #334155;
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 12px;
+            cursor: pointer;
+            color: #64748b;
+            transition: color 0.2s;
+            border: none;
+            background: none;
+            font-family: inherit;
+        }
+        .nav-item.active { color: #6366f1; }
+        .nav-item .icon { font-size: 1.4rem; }
+        .nav-item .label { font-size: 0.65rem; font-weight: 600; }
+
+        /* Tab Content */
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.4s; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-120px);
+            background: #10b981;
+            color: white;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-weight: 600;
+            z-index: 2000;
+            transition: transform 0.3s;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); }
+        .toast.info { background: #0ea5e9; }
+        .toast.warning { background: #f59e0b; }
+
+        /* Measurement Inputs */
+        .measurement-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        .measurement-input {
+            position: relative;
+        }
+        .measurement-input .unit {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+            font-size: 0.85rem;
+        }
+
+        /* Workout Log */
+        .log-entry {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: #0f172a;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            border: 1px solid #334155;
+        }
+        .log-entry .info { flex: 1; }
+        .log-entry .name { font-weight: 600; }
+        .log-entry .details { font-size: 0.8rem; color: #94a3b8; }
+        .log-entry .check {
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            border: 2px solid #334155;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .log-entry .check.done {
+            background: #10b981;
+            border-color: #10b981;
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 400px) {
+            .goal-grid { grid-template-columns: 1fr; }
+            .form-row { grid-template-columns: 1fr; }
+            .measurement-grid { grid-template-columns: 1fr; }
+        }
+
+        .hidden { display: none !important; }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
+
+        /* Animations */
+        .pulse { animation: pulse 2s infinite; }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .slide-up { animation: slideUp 0.4s ease-out; }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Research badge */
+        .research-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(16,185,129,0.15);
+            color: #10b981;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        .research-badge::before {
+            content: '●';
+            color: #10b981;
+            font-size: 0.6rem;
+        }
+
+        /* Exercise GIF placeholder */
+        .exercise-gif {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            border: 1px solid #334155;
+            position: relative;
+            overflow: hidden;
+        }
+        .exercise-gif .figure {
+            font-size: 4rem;
+            opacity: 0.3;
+        }
+        .exercise-gif .overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 12px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            text-align: center;
+        }
+
+        /* YouTube link style */
+        .youtube-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            background: rgba(239,68,68,0.12);
+            border: 1px solid rgba(239,68,68,0.25);
+            border-radius: 10px;
+            color: #ef4444;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            margin-top: 8px;
+        }
+        .youtube-link:hover {
+            background: rgba(239,68,68,0.2);
+            transform: translateX(4px);
+        }
+        .youtube-link .icon { font-size: 1.3rem; }
+
+        /* Week selector */
+        .week-selector {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            margin-bottom: 16px;
+        }
+        .week-btn {
+            padding: 10px 20px;
+            border: 2px solid #334155;
+            border-radius: 12px;
+            background: #0f172a;
+            color: #e2e8f0;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        .week-btn:hover { border-color: #6366f1; }
+        .week-btn.active {
+            background: #6366f1;
+            border-color: #6366f1;
+            color: white;
+        }
+
+        /* Day tabs */
+        .day-tabs {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            margin-bottom: 16px;
+        }
+        .day-tab {
+            padding: 8px 14px;
+            border: 1px solid #334155;
+            border-radius: 10px;
+            background: #0f172a;
+            color: #94a3b8;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        .day-tab:hover { border-color: #6366f1; color: #e2e8f0; }
+        .day-tab.active {
+            background: #6366f1;
+            border-color: #6366f1;
+            color: white;
+        }
+        .day-tab.rest { border-color: #10b981; color: #10b981; }
+        .day-tab.rest.active { background: #10b981; color: white; }
+        .day-tab.completed { border-color: #10b981; color: #10b981; }
+
+        /* Info box */
+        .info-box {
+            background: linear-gradient(135deg, rgba(14,165,233,0.12), rgba(99,102,241,0.12));
+            border: 1px solid rgba(14,165,233,0.25);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        .info-box .title {
+            font-weight: 700;
+            color: #0ea5e9;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Set tracker */
+        .set-tracker {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+        .set-dot {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid #475569;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .set-dot:hover { border-color: #6366f1; }
+        .set-dot.done {
+            background: #10b981;
+            border-color: #10b981;
+            color: white;
+        }
+        .set-dot.current {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99,102,241,0.3);
+            animation: pulse 1.5s infinite;
+        }
+
+        /* Routine time settings */
+        .time-setting {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px;
+            background: #0f172a;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            border: 1px solid #334155;
+        }
+        .time-setting .label { font-weight: 500; }
+        .time-setting .value {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .time-setting .value input {
+            width: 60px;
+            padding: 8px;
+            border: 1px solid #475569;
+            border-radius: 8px;
+            background: #1e293b;
+            color: #e2e8f0;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        /* Weight input for sets */
+        .set-input-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .set-input-row .set-num {
+            font-weight: 700;
+            color: #94a3b8;
+            min-width: 50px;
+        }
+        .set-input-row input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            background: #0f172a;
+            color: #e2e8f0;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        .set-input-row input:focus {
+            outline: none;
+            border-color: #6366f1;
+        }
+        .set-input-row .unit-label {
+            color: #64748b;
+            font-size: 0.8rem;
+            min-width: 30px;
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            color: #64748b;
+            padding: 30px;
+        }
+        .empty-state .emoji { font-size: 3rem; margin-bottom: 12px; display: block; }
+
+        /* Workout progress bar */
+        .workout-progress {
+            background: #0f172a;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            border: 1px solid #334155;
+        }
+        .workout-progress-bar {
+            height: 8px;
+            background: #334155;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+        .workout-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #6366f1, #8b5cf6);
+            border-radius: 4px;
+            transition: width 0.5s;
+        }
+        .workout-progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #94a3b8;
+        }
+
+        /* Phase badge */
+        .phase-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        .phase-badge.accumulation { background: rgba(14,165,233,0.15); color: #0ea5e9; }
+        .phase-badge.intensification { background: rgba(245,158,11,0.15); color: #f59e0b; }
+        .phase-badge.peaking { background: rgba(239,68,68,0.15); color: #ef4444; }
+        .phase-badge.deload { background: rgba(16,185,129,0.15); color: #10b981; }
+        .phase-badge.session { background: rgba(139,92,246,0.15); color: #8b5cf6; }
+
+        /* Chart container */
+        .chart-container {
+            height: 200px;
+            background: #0f172a;
+            border-radius: 12px;
+            padding: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+        .chart-svg {
+            width: 100%;
+            height: 100%;
+        }
+        .chart-line {
+            fill: none;
+            stroke: #6366f1;
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .chart-area {
+            fill: rgba(99,102,241,0.1);
+        }
+        .chart-dot {
+            fill: #6366f1;
+            stroke: #1e293b;
+            stroke-width: 2;
+        }
+        .chart-axis {
+            stroke: #334155;
+            stroke-width: 1;
+        }
+        .chart-grid {
+            stroke: #1e293b;
+            stroke-width: 1;
+            stroke-dasharray: 4;
+        }
+        .chart-label {
+            fill: #64748b;
+            font-size: 10px;
+        }
+    </style>
+</head>
+<body>
+
+
+    <div class="toast" id="toast">Saved!</div>
+
+    <!-- ==================== ONBOARDING ==================== -->
+    <div class="tab-content active" id="tab-onboarding">
+        <div class="header">
+            <h1>🏋️ FitScience Pro</h1>
+            <div class="subtitle">Evidence-Based Training</div>
+            <div class="badge">ACSM 2026 Guidelines</div>
+        </div>
+
+        <div class="container">
+            <div class="card slide-up">
+                <div class="research-badge">Research-Backed Protocols</div>
+                <div class="card-title">
+                    <span class="icon">📏</span>
+                    Your Measurements
+                </div>
+                <div class="measurement-grid">
+                    <div class="form-group">
+                        <label class="form-label">Age</label>
+                        <div class="measurement-input">
+                            <input type="number" class="form-input" id="onb-age" placeholder="25">
+                            <span class="unit">yrs</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Weight</label>
+                        <div class="measurement-input">
+                            <input type="number" class="form-input" id="onb-weight" placeholder="75" step="0.1">
+                            <span class="unit">kg</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Height</label>
+                        <div class="measurement-input">
+                            <input type="number" class="form-input" id="onb-height" placeholder="175">
+                            <span class="unit">cm</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Body Fat %</label>
+                        <div class="measurement-input">
+                            <input type="number" class="form-input" id="onb-bodyfat" placeholder="18" step="0.1">
+                            <span class="unit">%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card slide-up" style="animation-delay: 0.1s">
+                <div class="card-title">
+                    <span class="icon">🎯</span>
+                    Training Goal
+                </div>
+                <div class="goal-grid" id="goalSelector">
+                    <div class="goal-card selected" data-goal="strength" onclick="selectGoal(this)">
+                        <span class="emoji">💪</span>
+                        <span class="name">Strength</span>
+                        <span class="desc">Lift heavier, get stronger</span>
+                    </div>
+                    <div class="goal-card" data-goal="hypertrophy" onclick="selectGoal(this)">
+                        <span class="emoji">🏋️</span>
+                        <span class="name">Muscle Growth</span>
+                        <span class="desc">Build size & definition</span>
+                    </div>
+                    <div class="goal-card" data-goal="fatloss" onclick="selectGoal(this)">
+                        <span class="emoji">🔥</span>
+                        <span class="name">Fat Loss</span>
+                        <span class="desc">Lose fat, keep muscle</span>
+                    </div>
+                    <div class="goal-card" data-goal="endurance" onclick="selectGoal(this)">
+                        <span class="emoji">🏃</span>
+                        <span class="name">Endurance</span>
+                        <span class="desc">Stamina & conditioning</span>
+                    </div>
+                    <div class="goal-card" data-goal="power" onclick="selectGoal(this)">
+                        <span class="emoji">⚡</span>
+                        <span class="name">Power</span>
+                        <span class="desc">Explosive athleticism</span>
+                    </div>
+                    <div class="goal-card" data-goal="general" onclick="selectGoal(this)">
+                        <span class="emoji">🌟</span>
+                        <span class="name">General Fitness</span>
+                        <span class="desc">All-around health</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card slide-up" style="animation-delay: 0.2s">
+                <div class="card-title">
+                    <span class="icon">⏱️</span>
+                    Plan Duration
+                </div>
+                <div class="goal-grid" id="durationSelector">
+                    <div class="goal-card selected" data-duration="session" onclick="selectDuration(this)">
+                        <span class="emoji">⚡</span>
+                        <span class="name">Single Session</span>
+                        <span class="desc">One workout today</span>
+                    </div>
+                    <div class="goal-card" data-duration="short" onclick="selectDuration(this)">
+                        <span class="emoji">📅</span>
+                        <span class="name">Short-Term</span>
+                        <span class="desc">2-4 week microcycle</span>
+                    </div>
+                    <div class="goal-card" data-duration="medium" onclick="selectDuration(this)">
+                        <span class="emoji">📆</span>
+                        <span class="name">Medium-Term</span>
+                        <span class="desc">8-12 week mesocycle</span>
+                    </div>
+                    <div class="goal-card" data-duration="long" onclick="selectDuration(this)">
+                        <span class="emoji">🗓️</span>
+                        <span class="name">Long-Term</span>
+                        <span class="desc">6-12 month macrocycle</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card slide-up" style="animation-delay: 0.3s">
+                <div class="card-title">
+                    <span class="icon">🔧</span>
+                    Your Setup
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Available Equipment</label>
+                    <select class="form-select" id="onb-equipment">
+                        <option value="full">Full Gym (Barbells, Dumbbells, Machines)</option>
+                        <option value="dumbbells">Dumbbells Only</option>
+                        <option value="bodyweight">Bodyweight / Minimal Equipment</option>
+                        <option value="bands">Resistance Bands</option>
+                        <option value="home">Home Gym (Limited)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Training Days per Week</label>
+                    <select class="form-select" id="onb-frequency">
+                        <option value="2">2 days (Minimum effective dose)</option>
+                        <option value="3" selected>3 days</option>
+                        <option value="4">4 days</option>
+                        <option value="5">5 days</option>
+                        <option value="6">6 days</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Session Duration</label>
+                    <select class="form-select" id="onb-duration">
+                        <option value="30">30 minutes (Express)</option>
+                        <option value="45" selected>45 minutes</option>
+                        <option value="60">60 minutes</option>
+                        <option value="90">90 minutes</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Experience Level</label>
+                    <select class="form-select" id="onb-level">
+                        <option value="beginner">Beginner (&lt; 6 months)</option>
+                        <option value="intermediate" selected>Intermediate (6-24 months)</option>
+                        <option value="advanced">Advanced (2+ years)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="card slide-up" style="animation-delay: 0.4s">
+                <div class="card-title">
+                    <span class="icon">⏰</span>
+                    Your Schedule Preferences
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Preferred Workout Time</label>
+                    <select class="form-select" id="onb-time">
+                        <option value="morning">Morning (6-9 AM)</option>
+                        <option value="midday">Midday (12-2 PM)</option>
+                        <option value="evening" selected>Evening (5-8 PM)</option>
+                        <option value="night">Night (8-10 PM)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Rest Between Sets (default)</label>
+                    <select class="form-select" id="onb-rest">
+                        <option value="60">60 seconds (Endurance/Hypertrophy)</option>
+                        <option value="90" selected>90 seconds (Balanced)</option>
+                        <option value="180">3 minutes (Strength/Power)</option>
+                        <option value="300">5 minutes (Maximal Strength)</option>
+                    </select>
+                </div>
+            </div>
+
+            <button class="btn btn-primary" style="margin-bottom: 40px;" onclick="generatePlan()">
+                🎯 Generate My Plan
+            </button>
+        </div>
+    </div>
+
+    <!-- ==================== DASHBOARD ==================== -->
+    <div class="tab-content" id="tab-dashboard">
+        <div class="header">
+            <h1>📊 Dashboard</h1>
+            <div class="subtitle" id="dashDate">Today</div>
+        </div>
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="value" id="dash-plans">0</div>
+                    <div class="label">Active Plans</div>
+                </div>
+                <div class="stat-box">
+                    <div class="value" id="dash-workouts">0</div>
+                    <div class="label">Workouts Done</div>
+                </div>
+                <div class="stat-box">
+                    <div class="value" id="dash-streak">0</div>
+                    <div class="label">Day Streak</div>
+                </div>
+                <div class="stat-box">
+                    <div class="value" id="dash-minutes">0</div>
+                    <div class="label">Minutes This Week</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    <span class="icon">📋</span>
+                    Your Active Plans
+                </div>
+                <div id="activePlansList">
+                    <div class="empty-state">
+                        <span class="emoji">📋</span>
+                        No active plans yet.<br>Go to "Plans" to create one.
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    <span class="icon">🔥</span>
+                    Today's Workout
+                </div>
+                <div id="todayWorkout">
+                    <div class="empty-state">
+                        <span class="emoji">💪</span>
+                        No workout scheduled for today.<br>Check your plan or create a session.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== PLANS ==================== -->
+    <div class="tab-content" id="tab-plans">
+        <div class="header">
+            <h1>📋 My Plans</h1>
+            <div class="subtitle">Evidence-based programming</div>
+        </div>
+        <div class="container">
+            <button class="btn btn-primary" style="margin-bottom: 16px;" onclick="showOnboarding()">
+                ➕ Create New Plan
+            </button>
+            <div id="plansList"></div>
+        </div>
+    </div>
+
+    <!-- ==================== WORKOUT ==================== -->
+    <div class="tab-content" id="tab-workout">
+        <div class="header">
+            <h1>💪 Workout</h1>
+            <div class="subtitle" id="workoutPlanName">Active Session</div>
+        </div>
+        <div class="container" id="workoutContainer">
+            <div class="empty-state">
+                <span class="emoji">💪</span>
+                No active workout.<br>Select a plan and day to start training.
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== PROGRESS ==================== -->
+    <div class="tab-content" id="tab-progress">
+        <div class="header">
+            <h1>📈 Progress</h1>
+            <div class="subtitle">Track your gains</div>
+        </div>
+        <div class="container">
+            <div class="card">
+                <div class="card-title">
+                    <span class="icon">⚖️</span>
+                    Weight History
+                </div>
+                <div class="chart-container" id="progressWeightChart">
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #64748b;">
+                        No weight data yet
+                    </div>
+                </div>
+                <div style="display: flex; gap: 8px; margin-top: 12px;">
+                    <input type="number" class="form-input" id="progressWeightInput" placeholder="Weight (kg)" step="0.1">
+                    <button class="btn btn-primary" onclick="logProgressWeight()">Log</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    <span class="icon">🏆</span>
+                    Workout History
+                </div>
+                <div id="workoutHistoryList"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== SETTINGS ==================== -->
+    <div class="tab-content" id="tab-settings">
+        <div class="header">
+            <h1>⚙️ Settings</h1>
+            <div class="subtitle">Customize your experience</div>
+        </div>
+        <div class="container">
+            <div class="card">
+                <div class="card-title">
+                    <span class="icon">👤</span>
+                    Profile
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Name</label>
+                    <input type="text" class="form-input" id="set-name" placeholder="Your name">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Age</label>
+                        <input type="number" class="form-input" id="set-age">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Weight (kg)</label>
+                        <input type="number" class="form-input" id="set-weight" step="0.1">
+                    </div>
+                </div>
+                <button class="btn btn-primary" style="margin-top: 8px;" onclick="saveProfile()">Save Profile</button>
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    <span class="icon">⏱️</span>
+                    Default Timers
+                </div>
+                <div class="time-setting">
+                    <span class="label">Rest Between Sets</span>
+                    <div class="value">
+                        <input type="number" id="set-rest" value="90">
+                        <span>sec</span>
+                    </div>
+                </div>
+                <div class="time-setting">
+                    <span class="label">Workout Timer Alert</span>
+                    <div class="value">
+                        <input type="number" id="set-alert" value="45">
+                        <span>min</span>
+                    </div>
+                </div>
+                <button class="btn btn-primary" style="margin-top: 8px;" onclick="saveSettings()">Save Settings</button>
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    <span class="icon">💾</span>
+                    Your Data
+                </div>
+                <div class="info-box" style="margin-bottom: 16px; background: linear-gradient(135deg, rgba(16,185,129,0.1), rgba(52,211,153,0.1)); border-color: rgba(16,185,129,0.2);">
+                    <div class="title" style="color: #10b981;">✅ Everything Saves Automatically</div>
+                    <div style="font-size: 0.85rem; line-height: 1.6;">Your workouts, plans, and progress are always remembered — even if you close the app or restart your phone.</div>
+                </div>
+
+                <div style="background: #0f172a; border-radius: 12px; padding: 16px; margin-bottom: 16px; border: 1px solid #334155;">
+                    <div style="font-weight: 700; margin-bottom: 10px; color: #f59e0b;">⚠️ Heads Up</div>
+                    <div style="font-size: 0.85rem; color: #94a3b8; line-height: 1.6;">
+                        This app lives inside your browser. Your data will disappear if you:<br>
+                        • Clear your browser history/data<br>
+                        • Use Private/Incognito mode<br>
+                        • Uninstall your browser<br><br>
+                        <strong style="color: #e2e8f0;">Back up your data if you plan to switch phones or browsers.</strong>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" style="width: 100%; margin-bottom: 8px;" onclick="exportAllData()">
+                    📥 Back Up My Data
+                </button>
+                <div style="font-size: 0.75rem; color: #64748b; text-align: center; margin-bottom: 12px;">Downloads a small file you can keep safe</div>
+
+                <input type="file" id="importFileInput" accept=".json" style="display:none;" onchange="importAllData(this)">
+                <button class="btn btn-secondary" style="width: 100%; margin-bottom: 8px;" onclick="document.getElementById('importFileInput').click()">
+                    📤 Restore from Backup
+                </button>
+                <div style="font-size: 0.75rem; color: #64748b; text-align: center; margin-bottom: 12px;">Pick a backup file you saved earlier</div>
+
+                <button class="btn btn-outline" style="width: 100%; color: #ef4444; border-color: #ef4444;" onclick="clearAllData()">
+                    🗑️ Start Fresh (Delete Everything)
+                </button>
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    <span class="icon">📲</span>
+                    Install as App
+                </div>
+                <div class="info-box">
+                    <div class="title">💡 How to Install</div>
+                    <div style="margin-bottom: 8px;"><strong>Android (Chrome):</strong><br>Open this file in Chrome → Menu (⋮) → "Add to Home screen"</div>
+                    <div style="margin-bottom: 8px;"><strong>iPhone (Safari):</strong><br>Open in Safari → Share button → "Add to Home Screen"</div>
+                    <div><strong>Windows/Mac (Chrome/Edge):</strong><br>Address bar → Install icon (⊕) → "Install FitScience Pro"</div>
+                </div>
+                <div style="font-size: 0.8rem; color: #64748b; margin-top: 8px;">
+                    💾 This app works offline. All data is stored locally on your device.
+                </div>
+            </div>
+
+            <div style="text-align: center; padding: 20px; color: #64748b; font-size: 0.8rem;">
+                Based on ACSM 2026 Position Stand<br>
+                Rest interval research (de Salles 2009)<br>
+                Protein timing meta-analysis (Schoenfeld & Aragon 2013)
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== EXERCISE DETAIL MODAL ==================== -->
+    <div class="modal-overlay" id="exerciseModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Exercise</h3>
+                <button class="modal-close" onclick="closeModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="exercise-gif" id="modalGif">
+                    <span class="figure" id="modalFigure">🏋️</span>
+                    <div class="overlay" id="modalGifOverlay">
+                        <div style="color: #94a3b8; font-size: 0.85rem;">Animation Placeholder</div>
+                        <div style="color: #64748b; font-size: 0.75rem;">Click YouTube link below for video demo</div>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <div class="title">📋 Instructions</div>
+                    <div id="modalInstructions"></div>
+                </div>
+
+                <div class="info-box" style="background: linear-gradient(135deg, rgba(16,185,129,0.12), rgba(52,211,153,0.12)); border-color: rgba(16,185,129,0.25);">
+                    <div class="title" style="color: #10b981;">🔬 Research Notes</div>
+                    <div id="modalResearch"></div>
+                </div>
+
+                <div style="margin-bottom: 12px;">
+                    <div class="form-label">Your Notes</div>
+                    <textarea class="form-textarea" id="modalNotes" rows="3" placeholder="Add personal notes about weight used, form cues, etc..."></textarea>
+                </div>
+
+                <a href="#" class="youtube-link" id="modalYouTube" target="_blank">
+                    <span class="icon">▶️</span>
+                    <span>Watch Video Tutorial on YouTube</span>
+                </a>
+
+                <button class="btn btn-success" style="width: 100%; margin-top: 16px;" onclick="markSetCompleteFromModal()">
+                    ✅ Mark Set Complete
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== BOTTOM NAV ==================== -->
+    <nav class="bottom-nav">
+        <button class="nav-item active" onclick="switchTab('dashboard', this)">
+            <span class="icon">📊</span>
+            <span class="label">Home</span>
+        </button>
+        <button class="nav-item" onclick="switchTab('plans', this)">
+            <span class="icon">📋</span>
+            <span class="label">Plans</span>
+        </button>
+        <button class="nav-item" onclick="switchTab('workout', this)">
+            <span class="icon">💪</span>
+            <span class="label">Workout</span>
+        </button>
+        <button class="nav-item" onclick="switchTab('progress', this)">
+            <span class="icon">📈</span>
+            <span class="label">Progress</span>
+        </button>
+        <button class="nav-item" onclick="switchTab('settings', this)">
+            <span class="icon">⚙️</span>
+            <span class="label">Settings</span>
+        </button>
+    </nav>
+
+    <script>
+    // ==================== DATA & STORAGE ====================
+    const Storage = {
+        get(k) { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } },
+        set(k, v) { localStorage.setItem(k, JSON.stringify(v)); }
+    };
+
+    let appData = Storage.get('fitScienceData') || {
+        profile: {},
+        plans: [],
+        workouts: [],
+        weights: [],
+        settings: { restDefault: 90, alertTime: 45 },
+        streak: 0,
+        lastActive: null
+    };
+
+    let currentPlan = null;
+    let currentWeek = 1;
+    let currentDay = null;
+    let currentExercise = null;
+    let activeTimers = {};
+    let currentWorkoutState = null; // tracks active workout progress
+
+    // ==================== EXERCISE DATABASE ====================
+    const ExerciseDB = {
+        squat: {
+            name: "Barbell Back Squat",
+            muscles: "Quadriceps, Glutes, Hamstrings, Core",
+            equipment: "full",
+            type: "compound",
+            instructions: [
+                "Stand with feet shoulder-width apart, barbell resting on upper back/traps",
+                "Brace core, keep chest up, initiate movement by pushing hips back",
+                "Descend until thighs are at least parallel to floor",
+                "Drive through heels to return to starting position",
+                "Keep knees tracking over toes throughout movement"
+            ],
+            research: "ACSM 2026: Full range of motion produces greater hypertrophy than partial reps. 2-3 sets at 80%+ 1RM for strength; 10+ sets/week for hypertrophy.",
+            youtube: "https://www.youtube.com/results?search_query=barbell+back+squat+proper+form",
+            figure: "🏋️"
+        },
+        deadlift: {
+            name: "Conventional Deadlift",
+            muscles: "Posterior Chain, Back, Glutes, Hamstrings, Traps",
+            equipment: "full",
+            type: "compound",
+            instructions: [
+                "Stand with feet hip-width apart, barbell over mid-foot",
+                "Hinge at hips, grip bar just outside legs",
+                "Brace core, keep back neutral, drive through floor",
+                "Extend hips forward to lockout at top",
+                "Lower with control, maintaining neutral spine"
+            ],
+            research: "ACSM 2026: Deadlifts are fundamental for posterior chain development. Eccentric control is critical for hypertrophy adaptations.",
+            youtube: "https://www.youtube.com/results?search_query=conventional+deadlift+proper+form",
+            figure: "🏋️"
+        },
+        bench: {
+            name: "Barbell Bench Press",
+            muscles: "Chest, Anterior Deltoids, Triceps",
+            equipment: "full",
+            type: "compound",
+            instructions: [
+                "Lie flat on bench, eyes directly under bar",
+                "Grip bar slightly wider than shoulder-width",
+                "Lower bar to mid-chest with control (2-3 sec)",
+                "Press bar back to starting position, lock elbows",
+                "Keep feet planted, slight arch in lower back"
+            ],
+            research: "ACSM 2026: Bench press at 80%+ 1RM for 2-3 sets optimizes strength. Full range of motion with controlled eccentric enhances hypertrophy.",
+            youtube: "https://www.youtube.com/results?search_query=barbell+bench+press+proper+form",
+            figure: "🏋️"
+        },
+        ohp: {
+            name: "Overhead Press",
+            muscles: "Shoulders, Triceps, Upper Chest, Core",
+            equipment: "full",
+            type: "compound",
+            instructions: [
+                "Stand with barbell at upper chest/clavicle height",
+                "Grip slightly wider than shoulders, elbows forward",
+                "Brace core, press bar straight up",
+                "Head moves back slightly to allow bar path",
+                "Lock out at top, lower with control"
+            ],
+            research: "Research shows overhead pressing develops shoulder strength more effectively than lateral raises for overall deltoid development.",
+            youtube: "https://www.youtube.com/results?search_query=overhead+press+proper+form",
+            figure: "🏋️"
+        },
+        row: {
+            name: "Barbell Bent-Over Row",
+            muscles: "Lats, Rhomboids, Rear Delts, Biceps, Lower Back",
+            equipment: "full",
+            type: "compound",
+            instructions: [
+                "Hinge at hips until torso is ~45 degrees",
+                "Grip bar with pronated grip, hands shoulder-width",
+                "Pull bar to lower chest/upper abdomen",
+                "Squeeze shoulder blades together at top",
+                "Lower with control, maintain hip hinge position"
+            ],
+            research: "Rowing movements are essential for balanced shoulder health and posture. ACSM recommends pulling volume equal to pressing volume.",
+            youtube: "https://www.youtube.com/results?search_query=bent+over+row+proper+form",
+            figure: "🏋️"
+        },
+        db_press: {
+            name: "Dumbbell Bench Press",
+            muscles: "Chest, Anterior Deltoids, Triceps",
+            equipment: "dumbbells",
+            type: "compound",
+            instructions: [
+                "Sit on bench with dumbbells resting on thighs",
+                "Kick dumbbells up one at a time to starting position",
+                "Press dumbbells up until arms extended",
+                "Lower with control, elbows at ~45 degree angle",
+                "Greater range of motion than barbell variant"
+            ],
+            research: "Dumbbell pressing allows greater ROM and shoulder-friendly movement. Studies show similar muscle activation to barbell with reduced injury risk.",
+            youtube: "https://www.youtube.com/results?search_query=dumbbell+bench+press+proper+form",
+            figure: "🏋️"
+        },
+        db_row: {
+            name: "Single-Arm Dumbbell Row",
+            muscles: "Lats, Rhomboids, Rear Delts, Biceps",
+            equipment: "dumbbells",
+            type: "compound",
+            instructions: [
+                "Place knee and hand on bench for support",
+                "Other foot planted firmly on ground",
+                "Pull dumbbell to hip, keeping elbow close to body",
+                "Squeeze lat at top, lower with control",
+                "Maintain neutral spine throughout"
+            ],
+            research: "Unilateral rowing corrects imbalances and allows greater mind-muscle connection. Research supports unilateral work for addressing asymmetries.",
+            youtube: "https://www.youtube.com/results?search_query=single+arm+dumbbell+row+proper+form",
+            figure: "🏋️"
+        },
+        db_squat: {
+            name: "Goblet Squat",
+            muscles: "Quadriceps, Glutes, Core",
+            equipment: "dumbbells",
+            type: "compound",
+            instructions: [
+                "Hold dumbbell vertically at chest level",
+                "Feet shoulder-width apart, toes slightly outward",
+                "Descend until thighs parallel or below",
+                "Keep chest up, elbows inside knees at bottom",
+                "Drive through heels to stand"
+            ],
+            research: "Goblet squats are excellent for learning proper squat mechanics. The front-loaded position naturally improves posture and depth.",
+            youtube: "https://www.youtube.com/results?search_query=goblet+squat+proper+form",
+            figure: "🏋️"
+        },
+        pushup: {
+            name: "Push-Up",
+            muscles: "Chest, Anterior Deltoids, Triceps, Core",
+            equipment: "bodyweight",
+            type: "compound",
+            instructions: [
+                "Start in plank position, hands slightly wider than shoulders",
+                "Lower body until chest nearly touches floor",
+                "Keep body in straight line, elbows at ~45 degrees",
+                "Push back to starting position",
+                "Modify by elevating hands or doing from knees"
+            ],
+            research: "ACSM 2026: Bodyweight exercises are highly effective for strength and hypertrophy when taken near failure. Non-traditional training yields marked benefits.",
+            youtube: "https://www.youtube.com/results?search_query=perfect+pushup+form",
+            figure: "💪"
+        },
+        pullup: {
+            name: "Pull-Up",
+            muscles: "Lats, Biceps, Rhomboids, Rear Delts",
+            equipment: "bodyweight",
+            type: "compound",
+            instructions: [
+                "Hang from bar with pronated grip, hands shoulder-width",
+                "Initiate pull by depressing shoulder blades",
+                "Pull until chin clears bar",
+                "Lower with control to full arm extension",
+                "Use assisted variation if needed"
+            ],
+            research: "Pull-ups are the gold standard for back development. Research shows they activate lats more effectively than lat pulldowns in trained individuals.",
+            youtube: "https://www.youtube.com/results?search_query=pull+up+proper+form",
+            figure: "💪"
+        },
+        dip: {
+            name: "Parallel Bar Dip",
+            muscles: "Chest, Anterior Deltoids, Triceps",
+            equipment: "bodyweight",
+            type: "compound",
+            instructions: [
+                "Mount parallel bars, arms extended",
+                "Lean forward slightly for chest emphasis",
+                "Lower until upper arms parallel to floor",
+                "Push back to starting position",
+                "Use assisted machine or bands if needed"
+            ],
+            research: "Dips are highly effective for lower chest and triceps development. Studies show comparable activation to decline bench press.",
+            youtube: "https://www.youtube.com/results?search_query=parallel+bar+dip+proper+form",
+            figure: "💪"
+        },
+        lunge: {
+            name: "Walking Lunge",
+            muscles: "Quadriceps, Glutes, Hamstrings, Calves",
+            equipment: "bodyweight",
+            type: "compound",
+            instructions: [
+                "Step forward into lunge position",
+                "Lower back knee toward ground",
+                "Front thigh parallel to floor at bottom",
+                "Push through front heel to step into next lunge",
+                "Keep torso upright throughout"
+            ],
+            research: "Unilateral leg work reduces imbalances and improves functional strength. Walking lunges add dynamic stability challenge.",
+            youtube: "https://www.youtube.com/results?search_query=walking+lunge+proper+form",
+            figure: "🦵"
+        },
+        bicep_curl: {
+            name: "Barbell/Dumbbell Bicep Curl",
+            muscles: "Biceps Brachii, Brachialis",
+            equipment: "full",
+            type: "isolation",
+            instructions: [
+                "Stand with arms fully extended, weights at thighs",
+                "Curl weight up by flexing elbows",
+                "Squeeze biceps at top, avoid swinging",
+                "Lower with control to full extension",
+                "Keep elbows stationary at sides"
+            ],
+            research: "Full range of motion with controlled eccentric (3-4 sec lowering) maximizes bicep hypertrophy according to recent research.",
+            youtube: "https://www.youtube.com/results?search_query=bicep+curl+proper+form",
+            figure: "💪"
+        },
+        tricep_ext: {
+            name: "Tricep Pushdown/Rope Extension",
+            muscles: "Triceps Brachii",
+            equipment: "full",
+            type: "isolation",
+            instructions: [
+                "Stand at cable station, elbows at sides",
+                "Push bar/rope down until arms fully extended",
+                "Squeeze triceps at bottom",
+                "Return with control, elbows stay fixed",
+                "Rope variation allows greater range of motion"
+            ],
+            research: "Triceps make up 2/3 of upper arm mass. Research supports combining overhead and pushdown variations for complete triceps development.",
+            youtube: "https://www.youtube.com/results?search_query=tricep+pushdown+proper+form",
+            figure: "💪"
+        },
+        lateral_raise: {
+            name: "Lateral Raise",
+            muscles: "Lateral Deltoids",
+            equipment: "dumbbells",
+            type: "isolation",
+            instructions: [
+                "Stand with dumbbells at sides, slight lean forward",
+                "Raise arms out to sides until parallel to floor",
+                "Lead with elbows, not hands",
+                "Lower with control, avoid swinging",
+                "Use lighter weight for strict form"
+            ],
+            research: "Lateral raises are the most effective isolation exercise for medial deltoid development. Research shows 30-45 degree forward lean increases activation.",
+            youtube: "https://www.youtube.com/results?search_query=lateral+raise+proper+form",
+            figure: "💪"
+        },
+        leg_curl: {
+            name: "Leg Curl",
+            muscles: "Hamstrings",
+            equipment: "full",
+            type: "isolation",
+            instructions: [
+                "Lie face down on leg curl machine",
+                "Ankle pad just above heels",
+                "Curl heels toward glutes",
+                "Squeeze hamstrings at top",
+                "Lower with control, don't let weight stack touch"
+            ],
+            research: "Hamstring curls complement squatting movements. Research shows combining knee flexion and hip extension exercises optimizes hamstring development.",
+            youtube: "https://www.youtube.com/results?search_query=leg+curl+proper+form",
+            figure: "🦵"
+        },
+        leg_ext: {
+            name: "Leg Extension",
+            muscles: "Quadriceps",
+            equipment: "full",
+            type: "isolation",
+            instructions: [
+                "Sit on leg extension machine, back against pad",
+                "Ankle pad on top of lower legs",
+                "Extend legs until knees straight",
+                "Squeeze quads at top",
+                "Lower with control to 90 degrees"
+            ],
+            research: "Leg extensions effectively isolate quadriceps. Recent research shows they're safe for healthy knees when performed with controlled tempo.",
+            youtube: "https://www.youtube.com/results?search_query=leg+extension+proper+form",
+            figure: "🦵"
+        },
+        calf_raise: {
+            name: "Standing Calf Raise",
+            muscles: "Gastrocnemius, Soleus",
+            equipment: "full",
+            type: "isolation",
+            instructions: [
+                "Stand on elevated surface, balls of feet on edge",
+                "Lower heels below platform level",
+                "Rise up on toes as high as possible",
+                "Squeeze calves at top for 2 seconds",
+                "Lower with control, full stretch at bottom"
+            ],
+            research: "Calves respond best to high volume and slow eccentrics. Research suggests 15-20 rep ranges with full stretch are most effective.",
+            youtube: "https://www.youtube.com/results?search_query=standing+calf+raise+proper+form",
+            figure: "🦵"
+        },
+        plank: {
+            name: "Plank",
+            muscles: "Core, Rectus Abdominis, Transverse Abdominis",
+            equipment: "bodyweight",
+            type: "isolation",
+            instructions: [
+                "Start in push-up position, forearms on ground",
+                "Body in straight line from head to heels",
+                "Brace core, don't let hips sag or rise",
+                "Hold position for prescribed time",
+                "Breathe normally, don't hold breath"
+            ],
+            research: "Planks are superior to crunches for core stability. Research shows isometric core training transfers better to functional movements.",
+            youtube: "https://www.youtube.com/results?search_query=plank+proper+form",
+            figure: "🧘"
+        },
+        run: {
+            name: "Running / Jogging",
+            muscles: "Full Body Cardiovascular",
+            equipment: "bodyweight",
+            type: "cardio",
+            instructions: [
+                "Maintain upright posture, slight forward lean",
+                "Land midfoot, under center of mass",
+                "Cadence of 170-180 steps per minute",
+                "Relaxed shoulders, arms at 90 degrees",
+                "Breathe rhythmically, 3:2 or 2:2 pattern"
+            ],
+            research: "Zone 2 cardio (60-70% HRmax) builds aerobic base and mitochondrial density. The 80/20 model recommends 80% low intensity, 20% high intensity.",
+            youtube: "https://www.youtube.com/results?search_query=proper+running+form",
+            figure: "🏃"
+        },
+        hiit: {
+            name: "HIIT Sprint Intervals",
+            muscles: "Full Body, Cardiovascular",
+            equipment: "bodyweight",
+            type: "cardio",
+            instructions: [
+                "Warm up 5 minutes easy jogging",
+                "Sprint 30 seconds at 85-95% max effort",
+                "Recover 90 seconds walking or slow jog",
+                "Repeat 8-10 rounds",
+                "Cool down 5 minutes"
+            ],
+            research: "HIIT produces greater VO2max gains per minute than steady-state. Limit to 2-3 sessions/week with 48h recovery. EPOC adds 50-200 kcal post-workout.",
+            youtube: "https://www.youtube.com/results?search_query=hiit+sprint+intervals+proper+form",
+            figure: "🔥"
+        },
+        bike: {
+            name: "Stationary Bike / Cycling",
+            muscles: "Quadriceps, Hamstrings, Glutes, Cardiovascular",
+            equipment: "full",
+            type: "cardio",
+            instructions: [
+                "Adjust seat height: leg almost straight at bottom",
+                "Maintain 80-90 RPM cadence",
+                "Keep upper body relaxed, slight forward lean",
+                "Push and pull through entire pedal stroke",
+                "For intervals: 2 min hard / 1 min easy x 8"
+            ],
+            research: "Cycling is joint-friendly cardio. Research shows 4x4 Norwegian protocol (4 min hard / 3 min easy) produces exceptional cardiovascular adaptations.",
+            youtube: "https://www.youtube.com/results?search_query=stationary+bike+proper+form",
+            figure: "🚴"
+        },
+        band_pull: {
+            name: "Resistance Band Pull-Apart",
+            muscles: "Rear Delts, Rhomboids, Rotator Cuff",
+            equipment: "bands",
+            type: "isolation",
+            instructions: [
+                "Hold band at arms length, shoulder-width grip",
+                "Pull band apart by squeezing shoulder blades",
+                "Hold peak contraction for 2 seconds",
+                "Return with control, maintain tension",
+                "Excellent for shoulder health and posture"
+            ],
+            research: "Band pull-aparts are highly effective for shoulder prehab. Research shows they activate rear delts more than face pulls in some studies.",
+            youtube: "https://www.youtube.com/results?search_query=resistance+band+pull+apart+proper+form",
+            figure: "💪"
+        },
+        band_squat: {
+            name: "Banded Squat",
+            muscles: "Quadriceps, Glutes, Core",
+            equipment: "bands",
+            type: "compound",
+            instructions: [
+                "Stand on band with feet shoulder-width",
+                "Hold band at shoulders or cross over chest",
+                "Perform squat with band resistance",
+                "Band tension increases at top (accommodating resistance)",
+                "Excellent for home training"
+            ],
+            research: "Bands provide accommodating resistance - tension increases through ROM. Research shows comparable strength gains to free weights for beginners.",
+            youtube: "https://www.youtube.com/results?search_query=banded+squat+proper+form",
+            figure: "🏋️"
+        },
+        db_ohp: {
+            name: "Dumbbell Overhead Press",
+            muscles: "Shoulders, Triceps, Core",
+            equipment: "dumbbells",
+            type: "compound",
+            instructions: [
+                "Sit or stand with dumbbells at shoulder height",
+                "Palms facing forward, elbows slightly forward",
+                "Press dumbbells up until arms extended",
+                "Lower with control to starting position",
+                "Keep core braced throughout"
+            ],
+            research: "Dumbbell OHP allows natural scapular movement and reduces impingement risk compared to barbell variant.",
+            youtube: "https://www.youtube.com/results?search_query=dumbbell+overhead+press+proper+form",
+            figure: "🏋️"
+        },
+        db_rdl: {
+            name: "Dumbbell Romanian Deadlift",
+            muscles: "Hamstrings, Glutes, Lower Back",
+            equipment: "dumbbells",
+            type: "compound",
+            instructions: [
+                "Hold dumbbells in front of thighs",
+                "Slight knee bend, hinge at hips",
+                "Lower dumbbells along legs until stretch in hamstrings",
+                "Drive hips forward to return to standing",
+                "Keep back neutral, shoulders back"
+            ],
+            research: "RDLs are superior to conventional deadlifts for hamstring hypertrophy. The eccentric stretch is key for muscle growth.",
+            youtube: "https://www.youtube.com/results?search_query=dumbbell+romanian+deadlift+proper+form",
+            figure: "🏋️"
+        },
+        bw_squat: {
+            name: "Bodyweight Squat",
+            muscles: "Quadriceps, Glutes, Core",
+            equipment: "bodyweight",
+            type: "compound",
+            instructions: [
+                "Feet shoulder-width, toes slightly outward",
+                "Arms forward for balance",
+                "Descend until thighs parallel or below",
+                "Keep chest up, knees tracking over toes",
+                "Drive through heels to stand"
+            ],
+            research: "Bodyweight squats to failure produce significant hypertrophy. ACSM 2026 confirms load is flexible when effort is sufficient.",
+            youtube: "https://www.youtube.com/results?search_query=bodyweight+squat+proper+form",
+            figure: "🦵"
+        },
+        glute_bridge: {
+            name: "Glute Bridge",
+            muscles: "Glutes, Hamstrings, Core",
+            equipment: "bodyweight",
+            type: "compound",
+            instructions: [
+                "Lie on back, knees bent, feet flat on floor",
+                "Arms at sides for stability",
+                "Drive hips up, squeezing glutes at top",
+                "Hold peak contraction for 2 seconds",
+                "Lower with control"
+            ],
+            research: "Glute bridges effectively target gluteus maximus. Research shows they're excellent for hip extension strength and low back health.",
+            youtube: "https://www.youtube.com/results?search_query=glute+bridge+proper+form",
+            figure: "🦵"
+        },
+        band_row: {
+            name: "Banded Row",
+            muscles: "Lats, Rhomboids, Rear Delts, Biceps",
+            equipment: "bands",
+            type: "compound",
+            instructions: [
+                "Anchor band at waist height",
+                "Step back to create tension",
+                "Pull handles to lower ribs, squeezing shoulder blades",
+                "Keep elbows close to body",
+                "Return with control, maintain tension"
+            ],
+            research: "Banded rows provide consistent tension throughout the movement. Excellent for home back training.",
+            youtube: "https://www.youtube.com/results?search_query=banded+row+proper+form",
+            figure: "💪"
+        },
+        band_chest: {
+            name: "Banded Chest Press",
+            muscles: "Chest, Anterior Deltoids, Triceps",
+            equipment: "bands",
+            type: "compound",
+            instructions: [
+                "Anchor band behind you at chest height",
+                "Step forward to create tension",
+                "Press arms forward until fully extended",
+                "Squeeze chest at peak contraction",
+                "Return with control"
+            ],
+            research: "Banded pressing provides accommodating resistance - harder at the top where you're strongest. Good for hypertrophy stimulus.",
+            youtube: "https://www.youtube.com/results?search_query=banded+chest+press+proper+form",
+            figure: "💪"
+        },
+        face_pull: {
+            name: "Face Pull",
+            muscles: "Rear Delts, Rotator Cuff, Upper Back",
+            equipment: "full",
+            type: "isolation",
+            instructions: [
+                "Set cable at upper chest height with rope attachment",
+                "Pull rope to face level, splitting the rope apart",
+                "Externally rotate shoulders at end range",
+                "Squeeze rear delts and upper back",
+                "Return with control"
+            ],
+            research: "Face pulls are essential for shoulder health and posture. Research recommends them as a staple for rotator cuff health.",
+            youtube: "https://www.youtube.com/results?search_query=face+pull+proper+form",
+            figure: "💪"
+        },
+        leg_press: {
+            name: "Leg Press",
+            muscles: "Quadriceps, Glutes, Hamstrings",
+            equipment: "full",
+            type: "compound",
+            instructions: [
+                "Sit in leg press machine, back flat against pad",
+                "Feet shoulder-width on platform, toes slightly outward",
+                "Lower platform until knees are at 90 degrees",
+                "Don't let lower back round off pad",
+                "Press through heels to extend legs"
+            ],
+            research: "Leg press allows heavy loading with reduced spinal stress. Excellent for building leg strength and hypertrophy.",
+            youtube: "https://www.youtube.com/results?search_query=leg+press+proper+form",
+            figure: "🦵"
+        },
+        hack_squat: {
+            name: "Hack Squat",
+            muscles: "Quadriceps, Glutes",
+            equipment: "full",
+            type: "compound",
+            instructions: [
+                "Position shoulders under pads, back against backrest",
+                "Feet shoulder-width on platform",
+                "Lower until thighs parallel to platform",
+                "Keep knees tracking over toes",
+                "Drive through heels to stand"
+            ],
+            research: "Hack squats emphasize quadriceps with reduced lower back demand. Good for hypertrophy-focused leg training.",
+            youtube: "https://www.youtube.com/results?search_query=hack+squat+proper+form",
+            figure: "🦵"
+        },
+        incline_press: {
+            name: "Incline Bench Press",
+            muscles: "Upper Chest, Anterior Deltoids, Triceps",
+            equipment: "full",
+            type: "compound",
+            instructions: [
+                "Set bench to 30-45 degree incline",
+                "Grip bar slightly wider than shoulders",
+                "Lower to upper chest with control",
+                "Press up and slightly back toward rack",
+                "Keep feet planted, core braced"
+            ],
+            research: "Incline pressing targets upper chest fibers more effectively than flat pressing. 30-45 degrees is optimal for upper pec activation.",
+            youtube: "https://www.youtube.com/results?search_query=incline+bench+press+proper+form",
+            figure: "🏋️"
+        },
+        db_incline: {
+            name: "Dumbbell Incline Press",
+            muscles: "Upper Chest, Anterior Deltoids, Triceps",
+            equipment: "dumbbells",
+            type: "compound",
+            instructions: [
+                "Set bench to 30-45 degree incline",
+                "Start with dumbbells at shoulder height, palms forward",
+                "Press up until arms extended",
+                "Lower with control, elbows at ~45 degrees",
+                "Greater shoulder-friendly ROM than barbell"
+            ],
+            research: "Dumbbell incline press allows greater stretch at bottom and independent arm movement. Excellent for upper chest development.",
+            youtube: "https://www.youtube.com/results?search_query=dumbbell+incline+press+proper+form",
+            figure: "🏋️"
+        },
+        db_flye: {
+            name: "Dumbbell Flye",
+            muscles: "Chest (Pectoralis Major)",
+            equipment: "dumbbells",
+            type: "isolation",
+            instructions: [
+                "Lie on flat bench, dumbbells held above chest",
+                "Slight bend in elbows, palms facing each other",
+                "Lower arms out to sides in wide arc",
+                "Feel stretch in chest at bottom",
+                "Squeeze chest to bring dumbbells back together"
+            ],
+            research: "Flyes provide deep stretch on pecs. Research shows stretch-mediated hypertrophy may be a key driver of muscle growth.",
+            youtube: "https://www.youtube.com/results?search_query=dumbbell+flye+proper+form",
+            figure: "💪"
+        },
+        skullcrusher: {
+            name: "Skullcrusher / Lying Tricep Extension",
+            muscles: "Triceps Brachii",
+            equipment: "full",
+            type: "isolation",
+            instructions: [
+                "Lie on flat bench, barbell/dumbbells held above chest",
+                "Bend elbows, lowering weight toward forehead",
+                "Keep upper arms stationary, only forearms move",
+                "Extend arms back to starting position",
+                "Use EZ bar or dumbbells for wrist comfort"
+            ],
+            research: "Skullcrushers target the long head of triceps. The overhead position provides greater stretch on the long head.",
+            youtube: "https://www.youtube.com/results?search_query=skullcrusher+proper+form",
+            figure: "💪"
+        },
+        db_shrug: {
+            name: "Dumbbell Shrug",
+            muscles: "Upper Trapezius",
+            equipment: "dumbbells",
+            type: "isolation",
+            instructions: [
+                "Stand with dumbbells at sides, arms straight",
+                "Shrug shoulders up toward ears",
+                "Hold peak contraction for 1-2 seconds",
+                "Lower with control, don't roll shoulders",
+                "Keep arms straight throughout"
+            ],
+            research: "Shrugs effectively target upper traps. Research shows a slight forward lean may increase upper trap activation.",
+            youtube: "https://www.youtube.com/results?search_query=dumbbell+shrug+proper+form",
+            figure: "💪"
+        },
+        db_curl: {
+            name: "Dumbbell Bicep Curl",
+            muscles: "Biceps Brachii, Brachialis",
+            equipment: "dumbbells",
+            type: "isolation",
+            instructions: [
+                "Stand with dumbbells at sides, palms facing forward",
+                "Curl one or both dumbbells up by flexing elbows",
+                "Rotate wrists outward (supinate) at top for peak contraction",
+                "Lower with control, full extension at bottom",
+                "Keep elbows stationary at sides"
+            ],
+            research: "Supinating (rotating) during curl increases bicep activation. Full range of motion with controlled eccentric is optimal.",
+            youtube: "https://www.youtube.com/results?search_query=dumbbell+bicep+curl+proper+form",
+            figure: "💪"
+        },
+        db_lateral: {
+            name: "Dumbbell Lateral Raise",
+            muscles: "Lateral Deltoids",
+            equipment: "dumbbells",
+            type: "isolation",
+            instructions: [
+                "Stand with dumbbells at sides, slight forward lean",
+                "Raise arms out to sides until parallel to floor",
+                "Lead with elbows, pinkies slightly higher than thumbs",
+                "Lower with control over 2-3 seconds",
+                "Use lighter weight for strict form"
+            ],
+            research: "Lateral raises are the most effective isolation for medial deltoids. 30-45 degree forward lean and slight internal rotation increase activation.",
+            youtube: "https://www.youtube.com/results?search_query=dumbbell+lateral+raise+proper+form",
+            figure: "💪"
+        },
+        db_front_raise: {
+            name: "Dumbbell Front Raise",
+            muscles: "Anterior Deltoids",
+            equipment: "dumbbells",
+            type: "isolation",
+            instructions: [
+                "Stand with dumbbells in front of thighs, palms facing body",
+                "Raise one or both arms forward and up to shoulder height",
+                "Keep slight bend in elbows",
+                "Lower with control, don't swing",
+                "Alternate arms or do both simultaneously"
+            ],
+            research: "Front raises target anterior deltoids. Often less necessary if overhead pressing volume is high, but useful for balanced development.",
+            youtube: "https://www.youtube.com/results?search_query=dumbbell+front+raise+proper+form",
+            figure: "💪"
+        },
+        db_hammer_curl: {
+            name: "Hammer Curl",
+            muscles: "Brachialis, Biceps Brachii, Brachioradialis",
+            equipment: "dumbbells",
+            type: "isolation",
+            instructions: [
+                "Stand with dumbbells at sides, palms facing body (neutral grip)",
+                "Curl dumbbells up by flexing elbows",
+                "Keep thumbs facing up throughout",
+                "Lower with control to full extension",
+                "Excellent for brachialis and forearm development"
+            ],
+            research: "Hammer curls emphasize brachialis and brachioradialis more than standard curls. Great for arm thickness and forearm strength.",
+            youtube: "https://www.youtube.com/results?search_query=hammer+curl+proper+form",
+            figure: "💪"
+        },
+        db_calf: {
+            name: "Dumbbell Calf Raise",
+            muscles: "Gastrocnemius, Soleus",
+            equipment: "dumbbells",
+            type: "isolation",
+            instructions: [
+                "Stand on elevated surface, dumbbells at sides",
+                "Balls of feet on edge, heels hanging off",
+                "Lower heels below platform level for full stretch",
+                "Rise up on toes as high as possible",
+                "Squeeze calves at top, hold 2 seconds"
+            ],
+            research: "Calves respond to high volume and slow eccentrics. Full range of motion with stretch at bottom is critical for growth.",
+            youtube: "https://www.youtube.com/results?search_query=dumbbell+calf+raise+proper+form",
+            figure: "🦵"
+        },
+        bw_glute: {
+            name: "Bodyweight Glute Bridge",
+            muscles: "Glutes, Hamstrings, Core",
+            equipment: "bodyweight",
+            type: "compound",
+            instructions: [
+                "Lie on back, knees bent, feet flat",
+                "Arms at sides for stability",
+                "Drive hips up, squeezing glutes hard",
+                "Hold peak contraction for 2 seconds",
+                "Lower with control, don't touch floor between reps"
+            ],
+            research: "Glute bridges are excellent for glute activation. Research shows they're effective even with bodyweight when taken near failure.",
+            youtube: "https://www.youtube.com/results?search_query=glute+bridge+proper+form",
+            figure: "🦵"
+        },
+        bw_lunge: {
+            name: "Bodyweight Reverse Lunge",
+            muscles: "Quadriceps, Glutes, Hamstrings",
+            equipment: "bodyweight",
+            type: "compound",
+            instructions: [
+                "Stand tall, step backward into lunge",
+                "Lower back knee toward ground",
+                "Front thigh parallel to floor at bottom",
+                "Push through front heel to return to standing",
+                "Alternate legs or complete all reps on one side"
+            ],
+            research: "Reverse lunges place less stress on knees than forward lunges. Excellent for unilateral leg strength and balance.",
+            youtube: "https://www.youtube.com/results?search_query=reverse+lunge+proper+form",
+            figure: "🦵"
+        },
+        bw_stepup: {
+            name: "Bodyweight Step-Up",
+            muscles: "Quadriceps, Glutes, Hamstrings",
+            equipment: "bodyweight",
+            type: "compound",
+            instructions: [
+                "Stand facing a sturdy bench or step",
+                "Step up with one foot, driving through heel",
+                "Bring other foot up to meet first foot",
+                "Step back down with control",
+                "Complete all reps on one side, then switch"
+            ],
+            research: "Step-ups are highly functional and target quads and glutes. The height of the step determines muscle emphasis.",
+            youtube: "https://www.youtube.com/results?search_query=step+up+proper+form",
+            figure: "🦵"
+        },
+        bw_hip_thrust: {
+            name: "Hip Thrust",
+            muscles: "Glutes, Hamstrings",
+            equipment: "bodyweight",
+            type: "compound",
+            instructions: [
+                "Sit with upper back against bench, feet flat",
+                "Drive hips up until body forms straight line",
+                "Squeeze glutes hard at top",
+                "Chin tucked, eyes looking forward",
+                "Lower with control, repeat"
+            ],
+            research: "Hip thrusts produce the highest glute activation of any exercise according to EMG research. Essential for glute development.",
+            youtube: "https://www.youtube.com/results?search_query=hip+thrust+proper+form",
+            figure: "🦵"
+        },
+        bw_inverted_row: {
+            name: "Inverted Row",
+            muscles: "Lats, Rhomboids, Rear Delts, Biceps",
+            equipment: "bodyweight",
+            type: "compound",
+            instructions: [
+                "Set bar at waist height in rack",
+                "Lie under bar, grip slightly wider than shoulders",
+                "Pull chest to bar, squeezing shoulder blades",
+                "Keep body in straight line, core braced",
+                "Lower with control to full arm extension"
+            ],
+            research: "Inverted rows are the bodyweight equivalent of bent-over rows. Excellent for back development and shoulder health.",
+            youtube: "https://www.youtube.com/results?search_query=inverted+row+proper+form",
+            figure: "💪"
+        },
+        bw_pike_pushup: {
+            name: "Pike Push-Up",
+            muscles: "Shoulders, Triceps, Upper Chest",
+            equipment: "bodyweight",
+            type: "compound",
+            instructions: [
+                "Start in downward dog position, hips high",
+                "Hands shoulder-width, feet together",
+                "Lower head toward ground between hands",
+                "Keep elbows at ~45 degree angle",
+                "Push back to starting position"
+            ],
+            research: "Pike push-ups are the bodyweight equivalent of overhead press. Great for shoulder development without equipment.",
+            youtube: "https://www.youtube.com/results?search_query=pike+push+up+proper+form",
+            figure: "💪"
+        },
+        bw_diamond_pushup: {
+            name: "Diamond Push-Up",
+            muscles: "Triceps, Chest, Anterior Deltoids",
+            equipment: "bodyweight",
+            type: "compound",
+            instructions: [
+                "Form diamond shape with hands under chest",
+                "Index fingers and thumbs touching",
+                "Lower chest to hands with control",
+                "Keep elbows close to body",
+                "Push back to starting position"
+            ],
+            research: "Diamond push-ups emphasize triceps more than standard push-ups. The narrow grip shifts load to triceps and inner chest.",
+            youtube: "https://www.youtube.com/results?search_query=diamond+push+up+proper+form",
+            figure: "💪"
+        },
+        bw_archer_pushup: {
+            name: "Archer Push-Up",
+            muscles: "Chest, Shoulders, Triceps",
+            equipment: "bodyweight",
+            type: "compound",
+            instructions: [
+                "Start in push-up position, hands wider than shoulders",
+                "Lower to one side, extending opposite arm",
+                "Keep extended arm straight",
+                "Push back to center, then repeat other side",
+                "Progression toward one-arm push-up"
+            ],
+            research: "Archer push-ups provide unilateral chest loading. Excellent for building strength toward advanced calisthenics.",
+            youtube: "https://www.youtube.com/results?search_query=archer+push+up+proper+form",
+            figure: "💪"
+        },
+        bw_pistol_squat: {
+            name: "Assisted Pistol Squat",
+            muscles: "Quadriceps, Glutes, Hamstrings, Core",
+            equipment: "bodyweight",
+            type: "compound",
+            instructions: [
+                "Stand on one leg, other leg extended forward",
+                "Hold onto support if needed",
+                "Lower into squat on single leg",
+                "Keep heel on ground, chest up",
+                "Drive through heel to stand"
+            ],
+            research: "Pistol squats are the ultimate bodyweight leg exercise. Start with assisted variations and progress to full pistol.",
+            youtube: "https://www.youtube.com/results?search_query=assisted+pistol+squat+proper+form",
+            figure: "🦵"
+        },
+        bw_nordic_curl: {
+            name: "Nordic Hamstring Curl (Assisted)",
+            muscles: "Hamstrings",
+            equipment: "bodyweight",
+            type: "isolation",
+            instructions: [
+                "Kneel on pad, anchor feet under support",
+                "Keep body straight from knees to head",
+                "Lower forward with control using hamstrings",
+                "Catch yourself with hands at bottom",
+                "Push back up to starting position"
+            ],
+            research: "Nordic curls are the most effective hamstring exercise. Research shows they significantly reduce hamstring injury risk in athletes.",
+            youtube: "https://www.youtube.com/results?search_query=nordic+hamstring+curl+proper+form",
+            figure: "🦵"
+        },
+        bw_calf: {
+            name: "Single-Leg Calf Raise",
+            muscles: "Gastrocnemius, Soleus",
+            equipment: "bodyweight",
+            type: "isolation",
+            instructions: [
+                "Stand on edge of step on one leg",
+                "Lower heel below step level for stretch",
+                "Rise up on toes as high as possible",
+                "Squeeze calf at top for 2 seconds",
+                "Complete all reps, then switch legs"
+            ],
+            research: "Single-leg calf raises allow greater load per leg. Calves need high volume - aim for 15-20 reps per set.",
+            youtube: "https://www.youtube.com/results?search_query=single+leg+calf+raise+proper+form",
+            figure: "🦵"
+        },
+        band_ohp: {
+            name: "Banded Overhead Press",
+            muscles: "Shoulders, Triceps, Core",
+            equipment: "bands",
+            type: "compound",
+            instructions: [
+                "Stand on band with feet shoulder-width",
+                "Hold band at shoulder height, palms forward",
+                "Press band overhead until arms extended",
+                "Lower with control to starting position",
+                "Band tension increases at top"
+            ],
+            research: "Banded OHP provides accommodating resistance. The increasing tension at lockout matches the strength curve of the shoulder press.",
+            youtube: "https://www.youtube.com/results?search_query=banded+overhead+press+proper+form",
+            figure: "🏋️"
+        },
+        band_deadlift: {
+            name: "Banded Deadlift",
+            muscles: "Posterior Chain, Back, Glutes, Hamstrings",
+            equipment: "bands",
+            type: "compound",
+            instructions: [
+                "Stand on band with feet hip-width",
+                "Grip band handles or loop at sides",
+                "Hinge at hips, keep back neutral",
+                "Drive hips forward to stand",
+                "Lower with control, maintain neutral spine"
+            ],
+            research: "Banded deadlifts are effective for posterior chain development. The accommodating resistance matches the deadlift strength curve.",
+            youtube: "https://www.youtube.com/results?search_query=banded+deadlift+proper+form",
+            figure: "🏋️"
+        },
+        band_lateral: {
+            name: "Banded Lateral Raise",
+            muscles: "Lateral Deltoids",
+            equipment: "bands",
+            type: "isolation",
+            instructions: [
+                "Stand on band with one foot, hold other end",
+                "Arm at side, slight bend in elbow",
+                "Raise arm out to side until parallel to floor",
+                "Lead with elbow, not hand",
+                "Lower with control, maintain tension"
+            ],
+            research: "Banded lateral raises provide consistent tension through the entire ROM. Excellent for shoulder development at home.",
+            youtube: "https://www.youtube.com/results?search_query=banded+lateral+raise+proper+form",
+            figure: "💪"
+        },
+        band_tricep: {
+            name: "Banded Tricep Pushdown",
+            muscles: "Triceps Brachii",
+            equipment: "bands",
+            type: "isolation",
+            instructions: [
+                "Anchor band overhead on sturdy object",
+                "Grip band with both hands, elbows at sides",
+                "Push band down until arms fully extended",
+                "Squeeze triceps at bottom",
+                "Return with control, elbows stay fixed"
+            ],
+            research: "Banded tricep pushdowns effectively isolate triceps. The band tension increases at the bottom where triceps are strongest.",
+            youtube: "https://www.youtube.com/results?search_query=banded+tricep+pushdown+proper+form",
+            figure: "💪"
+        },
+        band_bicep: {
+            name: "Banded Bicep Curl",
+            muscles: "Biceps Brachii, Brachialis",
+            equipment: "bands",
+            type: "isolation",
+            instructions: [
+                "Stand on band, hold handles at sides",
+                "Palms facing forward, elbows at sides",
+                "Curl band up by flexing elbows",
+                "Squeeze biceps at top",
+                "Lower with control, maintain tension"
+            ],
+            research: "Banded curls provide peak tension at the top of the movement where biceps are shortened. Good for peak contraction training.",
+            youtube: "https://www.youtube.com/results?search_query=banded+bicep+curl+proper+form",
+            figure: "💪"
+        },
+        band_face_pull: {
+            name: "Banded Face Pull",
+            muscles: "Rear Delts, Rotator Cuff, Upper Back",
+            equipment: "bands",
+            type: "isolation",
+            instructions: [
+                "Anchor band at face height",
+                "Grip band with both hands, thumbs up",
+                "Pull band to face, splitting hands apart",
+                "Externally rotate shoulders at end range",
+                "Squeeze rear delts, return with control"
+            ],
+            research: "Banded face pulls are excellent for shoulder health. The band allows natural movement and consistent tension.",
+            youtube: "https://www.youtube.com/results?search_query=banded+face+pull+proper+form",
+            figure: "💪"
+        },
+        band_glute: {
+            name: "Banded Glute Bridge",
+            muscles: "Glutes, Hamstrings",
+            equipment: "bands",
+            type: "compound",
+            instructions: [
+                "Lie on back, band across hips, feet flat",
+                "Hold band ends at sides for stability",
+                "Drive hips up, pushing against band resistance",
+                "Squeeze glutes hard at top",
+                "Lower with control, maintain band tension"
+            ],
+            research: "Banded glute bridges add resistance to bodyweight. The band provides progressive overload for glute development.",
+            youtube: "https://www.youtube.com/results?search_query=banded+glute+bridge+proper+form",
+            figure: "🦵"
+        },
+        jump_squat: {
+            name: "Jump Squat",
+            muscles: "Quadriceps, Glutes, Hamstrings, Calves",
+            equipment: "bodyweight",
+            type: "power",
+            instructions: [
+                "Start in squat position, feet shoulder-width",
+                "Lower into quarter squat",
+                "Explode upward into jump",
+                "Land softly, immediately into next rep",
+                "Minimize ground contact time"
+            ],
+            research: "Jump squats develop explosive power. ACSM 2026 emphasizes power training for healthspan and functional capacity.",
+            youtube: "https://www.youtube.com/results?search_query=jump+squat+proper+form",
+            figure: "⚡"
+        },
+        box_jump: {
+            name: "Box Jump",
+            muscles: "Quadriceps, Glutes, Hamstrings, Calves",
+            equipment: "bodyweight",
+            type: "power",
+            instructions: [
+                "Stand facing sturdy box or platform",
+                "Lower into quarter squat, swing arms back",
+                "Explode upward, driving knees toward chest",
+                "Land softly on box with full foot contact",
+                "Step down, reset, repeat"
+            ],
+            research: "Box jumps develop lower body power and reactive strength. Start with low box height and progress gradually.",
+            youtube: "https://www.youtube.com/results?search_query=box+jump+proper+form",
+            figure: "⚡"
+        },
+        med_ball_slam: {
+            name: "Medicine Ball Slam",
+            muscles: "Full Body, Core, Shoulders",
+            equipment: "full",
+            type: "power",
+            instructions: [
+                "Stand with feet shoulder-width, ball overhead",
+                "Reach ball as high as possible",
+                "Explosively slam ball to ground",
+                "Follow through with entire body",
+                "Pick up ball and repeat immediately"
+            ],
+            research: "Med ball slams are excellent for full-body power. They develop rotational and overhead power with low joint stress.",
+            youtube: "https://www.youtube.com/results?search_query=medicine+ball+slam+proper+form",
+            figure: "⚡"
+        },
+        kb_swing: {
+            name: "Kettlebell Swing",
+            muscles: "Posterior Chain, Glutes, Hamstrings, Core",
+            equipment: "full",
+            type: "power",
+            instructions: [
+                "Stand with feet slightly wider than shoulders",
+                "Kettlebell between feet, hinge at hips to grip",
+                "Hike bell back between legs",
+                "Explosively drive hips forward, bell swings up",
+                "Bell reaches chest height, arms are passive"
+            ],
+            research: "KB swings develop hip hinge power and posterior chain strength. Research shows they improve vertical jump and sprint performance.",
+            youtube: "https://www.youtube.com/results?search_query=kettlebell+swing+proper+form",
+            figure: "⚡"
+        },
+        burpee: {
+            name: "Burpee",
+            muscles: "Full Body, Cardiovascular",
+            equipment: "bodyweight",
+            type: "cardio",
+            instructions: [
+                "Start standing, drop to squat position",
+                "Kick feet back to plank position",
+                "Perform push-up (optional)",
+                "Jump feet back to squat position",
+                "Explode upward into jump"
+            ],
+            research: "Burpees are a high-intensity full-body exercise. Research shows they produce high metabolic demand and cardiovascular stimulus.",
+            youtube: "https://www.youtube.com/results?search_query=burpee+proper+form",
+            figure: "🔥"
+        },
+        mountain_climber: {
+            name: "Mountain Climber",
+            muscles: "Core, Shoulders, Hip Flexors, Cardiovascular",
+            equipment: "bodyweight",
+            type: "cardio",
+            instructions: [
+                "Start in plank position, hands under shoulders",
+                "Drive one knee toward chest",
+                "Quickly switch legs in running motion",
+                "Keep hips low, core braced",
+                "Maintain rapid pace for prescribed time"
+            ],
+            research: "Mountain climbers provide core stability and cardiovascular challenge. Excellent for metabolic conditioning circuits.",
+            youtube: "https://www.youtube.com/results?search_query=mountain+climber+proper+form",
+            figure: "🔥"
+        },
+        jumping_jack: {
+            name: "Jumping Jack",
+            muscles: "Full Body, Cardiovascular",
+            equipment: "bodyweight",
+            type: "cardio",
+            instructions: [
+                "Start standing, feet together, arms at sides",
+                "Jump feet apart while raising arms overhead",
+                "Jump back to starting position",
+                "Maintain steady rhythm",
+                "Land softly on balls of feet"
+            ],
+            research: "Jumping jacks are a fundamental cardio exercise. They're low-impact when performed with soft landings and good for warm-ups.",
+            youtube: "https://www.youtube.com/results?search_query=jumping+jack+proper+form",
+            figure: "🏃"
+        },
+        high_knees: {
+            name: "High Knees",
+            muscles: "Hip Flexors, Quadriceps, Cardiovascular",
+            equipment: "bodyweight",
+            type: "cardio",
+            instructions: [
+                "Stand tall, start running in place",
+                "Drive knees up to waist height",
+                "Pump arms in running motion",
+                "Stay on balls of feet",
+                "Maintain rapid pace for prescribed time"
+            ],
+            research: "High knees develop hip flexor strength and cardiovascular capacity. They're excellent for warm-ups and HIIT circuits.",
+            youtube: "https://www.youtube.com/results?search_query=high+knees+proper+form",
+            figure: "🏃"
+        },
+        skater_jump: {
+            name: "Skater Jump",
+            muscles: "Glutes, Quadriceps, Calves, Cardiovascular",
+            equipment: "bodyweight",
+            type: "cardio",
+            instructions: [
+                "Start standing, jump to one side",
+                "Land on one foot, opposite leg swings behind",
+                "Immediately jump to other side",
+                "Arms swing in skating motion",
+                "Maintain continuous lateral movement"
+            ],
+            research: "Skater jumps develop lateral power and agility. They're excellent for athletic conditioning and lateral movement patterns.",
+            youtube: "https://www.youtube.com/results?search_query=skater+jump+proper+form",
+            figure: "🏃"
+        },
+        plank_jack: {
+            name: "Plank Jack",
+            muscles: "Core, Shoulders, Cardiovascular",
+            equipment: "bodyweight",
+            type: "cardio",
+            instructions: [
+                "Start in plank position, hands under shoulders",
+                "Jump feet apart and back together",
+                "Keep hips stable, don't let them rise",
+                "Maintain core tension throughout",
+                "Continue for prescribed time or reps"
+            ],
+            research: "Plank jacks combine core stability with cardiovascular challenge. Excellent for time-efficient conditioning.",
+            youtube: "https://www.youtube.com/results?search_query=plank+jack+proper+form",
+            figure: "🔥"
+        },
+        band_good_morning: {
+            name: "Banded Good Morning",
+            muscles: "Hamstrings, Glutes, Lower Back",
+            equipment: "bands",
+            type: "compound",
+            instructions: [
+                "Stand on band, loop over upper back",
+                "Feet shoulder-width, slight knee bend",
+                "Hinge at hips, push hips back",
+                "Keep back neutral, chest up",
+                "Drive hips forward to stand"
+            ],
+            research: "Good mornings target the posterior chain. The band provides accommodating resistance that increases as you hinge deeper.",
+            youtube: "https://www.youtube.com/results?search_query=banded+good+morning+proper+form",
+            figure: "🏋️"
+        },
+        band_leg_ext: {
+            name: "Banded Leg Extension",
+            muscles: "Quadriceps",
+            equipment: "bands",
+            type: "isolation",
+            instructions: [
+                "Sit on chair, anchor band under feet",
+                "Loop band around ankles",
+                "Extend legs until knees straight",
+                "Squeeze quads at top",
+                "Lower with control, maintain tension"
+            ],
+            research: "Banded leg extensions effectively isolate quadriceps. The band provides tension through the full ROM.",
+            youtube: "https://www.youtube.com/results?search_query=banded+leg+extension+proper+form",
+            figure: "🦵"
+        },
+        band_leg_curl: {
+            name: "Banded Leg Curl",
+            muscles: "Hamstrings",
+            equipment: "bands",
+            type: "isolation",
+            instructions: [
+                "Lie face down, anchor band to fixed point",
+                "Loop band around ankles",
+                "Curl heels toward glutes",
+                "Squeeze hamstrings at top",
+                "Lower with control, maintain tension"
+            ],
+            research: "Banded leg curls effectively isolate hamstrings. The band provides consistent resistance through the curl.",
+            youtube: "https://www.youtube.com/results?search_query=banded+leg+curl+proper+form",
+            figure: "🦵"
+        },
+        band_shoulder_dislocate: {
+            name: "Banded Shoulder Dislocate",
+            muscles: "Shoulders, Rotator Cuff",
+            equipment: "bands",
+            type: "isolation",
+            instructions: [
+                "Hold band with wide grip in front of thighs",
+                "Slowly raise arms overhead and behind back",
+                "Continue until band touches lower back",
+                "Return to starting position",
+                "Keep arms straight throughout"
+            ],
+            research: "Shoulder dislocates improve shoulder mobility and rotator cuff health. Essential warm-up for overhead athletes.",
+            youtube: "https://www.youtube.com/results?search_query=band+shoulder+dislocate+proper+form",
+            figure: "💪"
+        }
+    };
+
+    // ==================== PLAN GENERATOR ====================
+    function generatePlan() {
+        const profile = {
+            age: parseInt(document.getElementById('onb-age').value) || 25,
+            weight: parseFloat(document.getElementById('onb-weight').value) || 75,
+            height: parseInt(document.getElementById('onb-height').value) || 175,
+            bodyfat: parseFloat(document.getElementById('onb-bodyfat').value) || 18,
+            goal: document.querySelector('#goalSelector .selected')?.dataset.goal || 'strength',
+            duration: document.querySelector('#durationSelector .selected')?.dataset.duration || 'short',
+            equipment: document.getElementById('onb-equipment').value,
+            frequency: parseInt(document.getElementById('onb-frequency').value),
+            sessionTime: parseInt(document.getElementById('onb-duration').value),
+            level: document.getElementById('onb-level').value,
+            preferredTime: document.getElementById('onb-time').value,
+            restDefault: parseInt(document.getElementById('onb-rest').value)
+        };
+
+        appData.profile = profile;
+        appData.settings.restDefault = profile.restDefault;
+
+        const plan = createEvidenceBasedPlan(profile);
+        appData.plans.push(plan);
+        saveData();
+
+        showToast('🎯 Plan generated! Based on ACSM 2026 guidelines.');
+        switchTab('plans', document.querySelectorAll('.nav-item')[1]);
+        renderPlans();
+    }
+
+    function createEvidenceBasedPlan(profile) {
+        const planId = 'plan_' + Date.now();
+        const plan = {
+            id: planId,
+            name: getPlanName(profile),
+            goal: profile.goal,
+            duration: profile.duration,
+            created: new Date().toISOString(),
+            profile: profile,
+            weeks: []
+        };
+
+        const numWeeks = getWeeksForDuration(profile.duration);
+        const daysPerWeek = profile.frequency;
+
+        for (let w = 1; w <= numWeeks; w++) {
+            const week = {
+                weekNum: w,
+                days: [],
+                phase: getPhaseForWeek(w, numWeeks, profile.goal, profile.duration)
+            };
+
+            for (let d = 1; d <= daysPerWeek; d++) {
+                const isRest = shouldBeRestDay(d, daysPerWeek, profile.goal);
+                const day = {
+                    dayNum: d,
+                    name: getDayName(d, daysPerWeek, isRest),
+                    isRest: isRest,
+                    exercises: isRest ? [] : generateDayExercises(d, daysPerWeek, profile, week.phase),
+                    restBetweenSets: profile.restDefault,
+                    estimatedDuration: profile.sessionTime,
+                    completed: false,
+                    completedSets: {},
+                    loggedWeights: {}
+                };
+                week.days.push(day);
+            }
+
+            // Deload week every 6 weeks for long-term plans
+            if (profile.duration === 'long' && w % 6 === 0) {
+                week.days.forEach(day => {
+                    if (!day.isRest) {
+                        day.exercises.forEach(ex => {
+                            ex.sets = Math.max(2, ex.sets - 1);
+                            ex.reps = Math.ceil(ex.reps * 1.2);
+                            ex.deload = true;
+                        });
+                        day.isDeload = true;
+                    }
+                });
+                week.phase = 'deload';
+            }
+
+            plan.weeks.push(week);
+        }
+
+        return plan;
+    }
+
+    function getPlanName(profile) {
+        const goalNames = {
+            strength: 'Strength Builder', hypertrophy: 'Muscle Architect',
+            fatloss: 'Metabolic Shredder', endurance: 'Endurance Engine',
+            power: 'Power Athlete', general: 'All-Round Fitness'
+        };
+        const durNames = { session: 'Session', short: 'Microcycle', medium: 'Mesocycle', long: 'Macrocycle' };
+        return `${goalNames[profile.goal]} ${durNames[profile.duration]}`;
+    }
+
+    function getWeeksForDuration(duration) {
+        switch(duration) {
+            case 'session': return 1;
+            case 'short': return 3;
+            case 'medium': return 8;
+            case 'long': return 12;
+            default: return 4;
+        }
+    }
+
+    function getPhaseForWeek(week, total, goal, duration) {
+        if (duration === 'session') return 'session';
+        if (duration === 'short') return 'accumulation';
+
+        if (goal === 'strength') {
+            if (week <= Math.floor(total * 0.3)) return 'hypertrophy_base';
+            if (week <= Math.floor(total * 0.6)) return 'strength_focus';
+            if (week <= Math.floor(total * 0.85)) return 'peaking';
+            return 'realization';
+        }
+        if (goal === 'hypertrophy') {
+            if (week <= Math.floor(total * 0.25)) return 'accumulation';
+            if (week <= Math.floor(total * 0.5)) return 'intensification';
+            if (week <= Math.floor(total * 0.75)) return 'overreach';
+            return 'taper';
+        }
+        if (goal === 'fatloss') {
+            if (week <= Math.floor(total * 0.4)) return 'metabolic_base';
+            if (week <= Math.floor(total * 0.7)) return 'intensification';
+            return 'consolidation';
+        }
+        if (goal === 'power') {
+            if (week <= Math.floor(total * 0.3)) return 'strength_base';
+            if (week <= Math.floor(total * 0.6)) return 'power_focus';
+            return 'peaking';
+        }
+        if (goal === 'endurance') {
+            if (week <= Math.floor(total * 0.3)) return 'aerobic_base';
+            if (week <= Math.floor(total * 0.6)) return 'threshold';
+            return 'peak';
+        }
+        return 'general';
+    }
+
+    function shouldBeRestDay(dayIndex, totalDays, goal) {
+        if (totalDays <= 2) return false;
+        if (totalDays === 3) return false;
+        if (totalDays === 4) return dayIndex === 3;
+        if (totalDays === 5) return dayIndex === 3;
+        if (totalDays === 6) return dayIndex === 3 || dayIndex === 6;
+        return false;
+    }
+
+    function getDayName(dayIndex, totalDays, isRest) {
+        if (isRest) return 'Rest / Active Recovery';
+        const splits = {
+            2: ['Full Body A', 'Full Body B'],
+            3: ['Push', 'Pull', 'Legs'],
+            4: ['Upper A', 'Lower A', 'Rest', 'Upper B', 'Lower B'],
+            5: ['Push', 'Pull', 'Rest', 'Legs', 'Upper', 'Lower'],
+            6: ['Push A', 'Pull A', 'Legs A', 'Rest', 'Push B', 'Pull B', 'Legs B']
+        };
+        const names = splits[totalDays];
+        if (names) {
+            // Filter out rest entries from the split names
+            const workoutNames = names.filter(n => n !== 'Rest');
+            return workoutNames[(dayIndex - 1) % workoutNames.length] || `Day ${dayIndex}`;
+        }
+        return `Day ${dayIndex}`;
+    }
+
+    function generateDayExercises(dayIndex, totalDays, profile, phase) {
+        const eq = profile.equipment;
+        const goal = profile.goal;
+        const level = profile.level;
+        const time = profile.sessionTime;
+
+        // Filter exercises by equipment availability
+        const available = Object.entries(ExerciseDB).filter(([k, ex]) => {
+            if (eq === 'full') return true;
+            if (eq === 'dumbbells') return ex.equipment === 'dumbbells' || ex.equipment === 'bodyweight';
+            if (eq === 'bodyweight') return ex.equipment === 'bodyweight';
+            if (eq === 'bands') return ex.equipment === 'bands' || ex.equipment === 'bodyweight';
+            if (eq === 'home') return ex.equipment !== 'full';
+            return true;
+        }).map(([k, ex]) => ({ key: k, ...ex }));
+
+        const compounds = available.filter(e => e.type === 'compound');
+        const isolations = available.filter(e => e.type === 'isolation');
+        const cardio = available.filter(e => e.type === 'cardio');
+        const power = available.filter(e => e.type === 'power');
+
+        let exercises = [];
+
+        // Determine rep/set schemes based on goal and phase
+        const schemes = getRepScheme(goal, phase, level);
+
+        // Build day based on split type
+        if (totalDays <= 3) {
+            // Full body approach
+            exercises = buildFullBodyDay(compounds, isolations, cardio, schemes, goal, time);
+        } else if (dayIndex <= Math.ceil(totalDays / 2)) {
+            // First half of week
+            exercises = buildUpperDay(dayIndex, compounds, isolations, schemes, goal, time, eq);
+        } else {
+            // Second half of week
+            exercises = buildLowerDay(dayIndex, compounds, isolations, schemes, goal, time, eq);
+        }
+
+        // Adjust for time constraints
+        const estTimePerEx = goal === 'strength' ? 8 : (goal === 'endurance' ? 5 : 6);
+        const maxExercises = Math.floor((time - 10) / estTimePerEx); // 10 min warm-up buffer
+        if (exercises.length > maxExercises) {
+            exercises = exercises.slice(0, maxExercises);
+        }
+
+        // Add unique IDs and initialize tracking
+        return exercises.map((ex, i) => ({
+            ...ex,
+            id: `ex_${dayIndex}_${i}_${Date.now()}`,
+            completedSets: 0,
+            loggedWeight: null
+        }));
+    }
+
+    function getRepScheme(goal, phase, level) {
+        const base = {
+            strength: { sets: 3, reps: '5', rest: 180, rpe: '8' },
+            hypertrophy: { sets: 3, reps: '10', rest: 90, rpe: '8' },
+            fatloss: { sets: 3, reps: '12', rest: 60, rpe: '9' },
+            endurance: { sets: 2, reps: '15', rest: 45, rpe: '7' },
+            power: { sets: 4, reps: '3', rest: 180, rpe: '7' },
+            general: { sets: 3, reps: '10', rest: 90, rpe: '7' }
+        };
+
+        let scheme = { ...base[goal] };
+
+        // Adjust by phase
+        if (phase === 'deload') {
+            scheme.sets = Math.max(2, scheme.sets - 1);
+            scheme.reps = String(parseInt(scheme.reps) + 4);
+            scheme.rpe = '6';
+        }
+        if (phase === 'peaking' || phase === 'realization') {
+            if (goal === 'strength') { scheme.sets = 2; scheme.reps = '3'; scheme.rpe = '9'; }
+        }
+        if (phase === 'overreach') {
+            scheme.sets += 1;
+            scheme.rpe = '9';
+        }
+        if (phase === 'intensification') {
+            scheme.sets += 1;
+        }
+
+        // Adjust by level
+        if (level === 'beginner') {
+            scheme.sets = Math.max(2, scheme.sets - 1);
+            scheme.rpe = String(Math.max(6, parseInt(scheme.rpe) - 1));
+        }
+        if (level === 'advanced') {
+            scheme.sets += 1;
+        }
+
+        return scheme;
+    }
+
+    function buildFullBodyDay(compounds, isolations, cardio, schemes, goal, time) {
+        const exs = [];
+
+        // Always include a lower body push
+        const squatEx = compounds.find(e => e.key === 'squat') || compounds.find(e => e.muscles.includes('Quadriceps')) || compounds[0];
+        if (squatEx) exs.push({ ...squatEx, sets: schemes.sets, reps: schemes.reps, rest: schemes.rest, rpe: schemes.rpe });
+
+        // Upper body push
+        const pushEx = compounds.find(e => e.key === 'bench') || compounds.find(e => e.key === 'db_press') || compounds.find(e => e.muscles.includes('Chest')) || compounds[1];
+        if (pushEx && !exs.find(e => e.key === pushEx.key)) {
+            exs.push({ ...pushEx, sets: schemes.sets, reps: schemes.reps, rest: schemes.rest, rpe: schemes.rpe });
+        }
+
+        // Upper body pull
+        const pullEx = compounds.find(e => e.key === 'row') || compounds.find(e => e.key === 'db_row') || compounds.find(e => e.muscles.includes('Lats')) || compounds[2];
+        if (pullEx && !exs.find(e => e.key === pullEx.key)) {
+            exs.push({ ...pullEx, sets: schemes.sets, reps: schemes.reps, rest: schemes.rest, rpe: schemes.rpe });
+        }
+
+        // Hinge
+        const hingeEx = compounds.find(e => e.key === 'deadlift') || compounds.find(e => e.key === 'db_rdl') || compounds.find(e => e.muscles.includes('Hamstrings')) || compounds[3];
+        if (hingeEx && !exs.find(e => e.key === hingeEx.key)) {
+            exs.push({ ...hingeEx, sets: schemes.sets, reps: schemes.reps, rest: schemes.rest, rpe: schemes.rpe });
+        }
+
+        // Add isolations based on goal
+        if (goal === 'hypertrophy' || goal === 'general') {
+            const armEx = isolations.find(e => e.key === 'bicep_curl') || isolations[0];
+            if (armEx) exs.push({ ...armEx, sets: Math.max(2, schemes.sets - 1), reps: String(parseInt(schemes.reps) + 2), rest: 60, rpe: schemes.rpe });
+        }
+
+        if (goal === 'fatloss' || goal === 'endurance') {
+            const cardEx = cardio[0];
+            if (cardEx) exs.push({ ...cardEx, sets: 1, reps: '10 min', rest: 0, rpe: '7', isCardio: true });
+        }
+
+        if (goal === 'power') {
+            const powEx = compounds.find(e => e.type === 'power') || compounds.find(e => e.key === 'jump_squat');
+            if (powEx) exs.push({ ...powEx, sets: 3, reps: '5', rest: 120, rpe: '7' });
+        }
+
+        return exs;
+    }
+
+    function buildUpperDay(dayIndex, compounds, isolations, schemes, goal, time, eq) {
+        const exs = [];
+        const isPush = dayIndex % 2 === 1;
+
+        if (isPush) {
+            // Push day
+            const benchEx = compounds.find(e => e.key === 'bench') || compounds.find(e => e.key === 'db_press') || compounds.find(e => e.muscles.includes('Chest'));
+            if (benchEx) exs.push({ ...benchEx, sets: schemes.sets, reps: schemes.reps, rest: schemes.rest, rpe: schemes.rpe });
+
+            const ohpEx = compounds.find(e => e.key === 'ohp') || compounds.find(e => e.key === 'db_ohp') || compounds.find(e => e.muscles.includes('Shoulders'));
+            if (ohpEx && !exs.find(e => e.key === ohpEx.key)) {
+                exs.push({ ...ohpEx, sets: schemes.sets, reps: schemes.reps, rest: schemes.rest, rpe: schemes.rpe });
+            }
+
+            if (goal === 'hypertrophy') {
+                const inclineEx = compounds.find(e => e.key === 'incline_press') || compounds.find(e => e.key === 'db_incline') || compounds.find(e => e.muscles.includes('Upper Chest'));
+                if (inclineEx && !exs.find(e => e.key === inclineEx.key)) {
+                    exs.push({ ...inclineEx, sets: Math.max(2, schemes.sets - 1), reps: schemes.reps, rest: schemes.rest, rpe: schemes.rpe });
+                }
+            }
+
+            // Triceps
+            const triEx = isolations.find(e => e.key === 'tricep_ext') || isolations.find(e => e.key === 'skullcrusher') || isolations.find(e => e.muscles.includes('Triceps'));
+            if (triEx) exs.push({ ...triEx, sets: Math.max(2, schemes.sets - 1), reps: String(parseInt(schemes.reps) + 2), rest: 60, rpe: schemes.rpe });
+
+            // Lateral delts
+            const latEx = isolations.find(e => e.key === 'lateral_raise') || isolations.find(e => e.key === 'db_lateral') || isolations.find(e => e.muscles.includes('Lateral Deltoids'));
+            if (latEx) exs.push({ ...latEx, sets: 3, reps: '12', rest: 60, rpe: '8' });
+        } else {
+            // Pull day
+            const rowEx = compounds.find(e => e.key === 'row') || compounds.find(e => e.key === 'db_row') || compounds.find(e => e.muscles.includes('Lats'));
+            if (rowEx) exs.push({ ...rowEx, sets: schemes.sets, reps: schemes.reps, rest: schemes.rest, rpe: schemes.rpe });
+
+            const pullEx = compounds.find(e => e.key === 'pullup') || compounds.find(e => e.key === 'bw_inverted_row') || compounds.find(e => e.muscles.includes('Lats'));
+            if (pullEx && !exs.find(e => e.key === pullEx.key)) {
+                exs.push({ ...pullEx, sets: schemes.sets, reps: schemes.reps, rest: schemes.rest, rpe: schemes.rpe });
+            }
+
+            // Rear delts
+            const rearEx = isolations.find(e => e.key === 'face_pull') || isolations.find(e => e.key === 'band_face_pull') || isolations.find(e => e.muscles.includes('Rear Delts'));
+            if (rearEx) exs.push({ ...rearEx, sets: 3, reps: '15', rest: 60, rpe: '7' });
+
+            // Biceps
+            const biEx = isolations.find(e => e.key === 'bicep_curl') || isolations.find(e => e.key === 'db_curl') || isolations.find(e => e.muscles.includes('Biceps'));
+            if (biEx) exs.push({ ...biEx, sets: Math.max(2, schemes.sets - 1), reps: String(parseInt(schemes.reps) + 2), rest: 60, rpe: schemes.rpe });
+        }
+
+        return exs;
+    }
+
+    function buildLowerDay(dayIndex, compounds, isolations, schemes, goal, time, eq) {
+        const exs = [];
+
+        const squatEx = compounds.find(e => e.key === 'squat') || compounds.find(e => e.key === 'db_squat') || compounds.find(e => e.key === 'bw_squat') || compounds.find(e => e.muscles.includes('Quadriceps'));
+        if (squatEx) exs.push({ ...squatEx, sets: schemes.sets, reps: schemes.reps, rest: schemes.rest, rpe: schemes.rpe });
+
+        const hingeEx = compounds.find(e => e.key === 'deadlift') || compounds.find(e => e.key === 'db_rdl') || compounds.find(e => e.key === 'band_deadlift') || compounds.find(e => e.muscles.includes('Hamstrings'));
+        if (hingeEx && !exs.find(e => e.key === hingeEx.key)) {
+            exs.push({ ...hingeEx, sets: schemes.sets, reps: schemes.reps, rest: schemes.rest, rpe: schemes.rpe });
+        }
+
+        // Unilateral leg
+        const lungeEx = compounds.find(e => e.key === 'lunge') || compounds.find(e => e.key === 'bw_lunge') || compounds.find(e => e.muscles.includes('Quadriceps'));
+        if (lungeEx && !exs.find(e => e.key === lungeEx.key)) {
+            exs.push({ ...lungeEx, sets: Math.max(2, schemes.sets - 1), reps: String(parseInt(schemes.reps) + 2), rest: 60, rpe: schemes.rpe });
+        }
+
+        // Leg extension
+        const extEx = isolations.find(e => e.key === 'leg_ext') || isolations.find(e => e.key === 'band_leg_ext') || isolations.find(e => e.muscles.includes('Quadriceps'));
+        if (extEx) exs.push({ ...extEx, sets: 3, reps: '12', rest: 60, rpe: '8' });
+
+        // Leg curl
+        const curlEx = isolations.find(e => e.key === 'leg_curl') || isolations.find(e => e.key === 'band_leg_curl') || isolations.find(e => e.muscles.includes('Hamstrings'));
+        if (curlEx && !exs.find(e => e.key === curlEx.key)) {
+            exs.push({ ...curlEx, sets: 3, reps: '12', rest: 60, rpe: '8' });
+        }
+
+        // Calves
+        const calfEx = isolations.find(e => e.key === 'calf_raise') || isolations.find(e => e.key === 'db_calf') || isolations.find(e => e.key === 'bw_calf') || isolations.find(e => e.muscles.includes('Gastrocnemius'));
+        if (calfEx) exs.push({ ...calfEx, sets: 3, reps: '15', rest: 45, rpe: '8' });
+
+        if (goal === 'fatloss' || goal === 'endurance') {
+            const cardEx = compounds.find(e => e.type === 'cardio') || compounds.find(e => e.key === 'run');
+            if (cardEx && !exs.find(e => e.key === cardEx.key)) {
+                exs.push({ ...cardEx, sets: 1, reps: '10 min', rest: 0, rpe: '7', isCardio: true });
+            }
+        }
+
+        return exs;
+    }
+
+    // ==================== UI RENDERING ====================
+    function switchTab(tabName, navItem) {
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        document.getElementById('tab-' + tabName).classList.add('active');
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        if (navItem) navItem.classList.add('active');
+
+        if (tabName === 'dashboard') renderDashboard();
+        if (tabName === 'plans') renderPlans();
+        if (tabName === 'progress') renderProgress();
+        if (tabName === 'settings') loadSettings();
+    }
+
+    function selectGoal(el) {
+        document.querySelectorAll('#goalSelector .goal-card').forEach(c => c.classList.remove('selected'));
+        el.classList.add('selected');
+    }
+
+    function selectDuration(el) {
+        document.querySelectorAll('#durationSelector .goal-card').forEach(c => c.classList.remove('selected'));
+        el.classList.add('selected');
+    }
+
+    function showOnboarding() {
+        switchTab('onboarding', null);
+    }
+
+    function renderDashboard() {
+        document.getElementById('dashDate').textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+        document.getElementById('dash-plans').textContent = appData.plans.length;
+        document.getElementById('dash-workouts').textContent = appData.workouts.length;
+        document.getElementById('dash-streak').textContent = appData.streak;
+
+        const thisWeek = appData.workouts.filter(w => {
+            const d = new Date(w.date);
+            const now = new Date();
+            const diff = (now - d) / (1000 * 60 * 60 * 24);
+            return diff < 7;
+        });
+        const totalMinutes = thisWeek.reduce((sum, w) => sum + (w.duration || 45), 0);
+        document.getElementById('dash-minutes').textContent = totalMinutes;
+
+        // Active plans
+        const plansList = document.getElementById('activePlansList');
+        if (appData.plans.length === 0) {
+            plansList.innerHTML = `<div class="empty-state"><span class="emoji">📋</span>No active plans yet.<br>Go to "Plans" to create one.</div>`;
+        } else {
+            plansList.innerHTML = appData.plans.slice(0, 2).map(p => `
+                <div class="plan-card" onclick="viewPlan('${p.id}')">
+                    <div class="plan-header">
+                        <span class="plan-name">${p.name}</span>
+                        <span class="plan-tag">${p.goal}</span>
+                    </div>
+                    <div class="plan-desc">${p.weeks.length} weeks · ${p.profile.frequency} days/week · ${p.profile.equipment}</div>
+                </div>
+            `).join('');
+        }
+
+        // Today's workout
+        const todayWorkout = document.getElementById('todayWorkout');
+        const todayPlan = appData.plans[appData.plans.length - 1];
+        if (!todayPlan) {
+            todayWorkout.innerHTML = `<div class="empty-state"><span class="emoji">💪</span>No workout scheduled for today.<br>Check your plan or create a session.</div>`;
+        } else {
+            const currentWk = todayPlan.weeks.find(w => !w.days.every(d => d.completed)) || todayPlan.weeks[0];
+            const currentDy = currentWk.days.find(d => !d.completed && !d.isRest) || currentWk.days.find(d => !d.isRest);
+            if (currentDy) {
+                todayWorkout.innerHTML = `
+                    <div class="plan-card" onclick="startWorkout('${todayPlan.id}', ${currentWk.weekNum}, ${currentDy.dayNum})">
+                        <div class="plan-header">
+                            <span class="plan-name">${currentDy.name}</span>
+                            <span class="plan-tag">Week ${currentWk.weekNum}</span>
+                        </div>
+                        <div class="plan-desc">${currentDy.exercises.length} exercises · ~${currentDy.estimatedDuration} min · ${currentDy.restBetweenSets}s rest</div>
+                        <div class="plan-meta">
+                            <span>📊 ${currentDy.exercises.length} exercises</span>
+                            <span>⏱️ ${currentDy.estimatedDuration} min</span>
+                        </div>
+                    </div>
+                `;
+            } else {
+                todayWorkout.innerHTML = `<div class="empty-state"><span class="emoji">🎉</span>All workouts completed!<br>Great job this week.</div>`;
+            }
+        }
+    }
+
+    function renderPlans() {
+        const list = document.getElementById('plansList');
+        if (appData.plans.length === 0) {
+            list.innerHTML = `<div class="empty-state"><span class="emoji">📋</span>No plans yet.<br>Create your first evidence-based plan above.</div>`;
+            return;
+        }
+
+        list.innerHTML = appData.plans.map(p => {
+            const totalDays = p.weeks.reduce((sum, w) => sum + w.days.filter(d => !d.isRest).length, 0);
+            const completedDays = p.weeks.reduce((sum, w) => sum + w.days.filter(d => d.completed && !d.isRest).length, 0);
+            const progress = totalDays > 0 ? Math.round((completedDays / totalDays) * 100) : 0;
+
+            return `
+                <div class="plan-card" id="plan-card-${p.id}">
+                    <div class="plan-header">
+                        <span class="plan-name">${p.name}</span>
+                        <span class="plan-tag">${p.goal}</span>
+                    </div>
+                    <div class="plan-desc">${p.weeks.length} weeks · ${p.profile.frequency} days/week · ${p.profile.equipment}</div>
+                    <div class="plan-meta">
+                        <span>📊 ${totalDays} workouts</span>
+                        <span>✅ ${completedDays} done</span>
+                        <span>📈 ${progress}%</span>
+                    </div>
+                    <div class="workout-progress-bar" style="margin-top: 8px; height: 6px;">
+                        <div class="workout-progress-fill" style="width: ${progress}%"></div>
+                    </div>
+                    <div class="plan-actions">
+                        <button class="btn btn-primary btn-small" onclick="viewPlan('${p.id}')">View</button>
+                        <button class="btn btn-secondary btn-small" onclick="deletePlan('${p.id}')">Delete</button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    function viewPlan(planId) {
+        currentPlan = appData.plans.find(p => p.id === planId);
+        if (!currentPlan) return;
+        currentWeek = 1;
+        renderPlanDetail();
+        switchTab('workout', document.querySelectorAll('.nav-item')[2]);
+    }
+
+    function renderPlanDetail() {
+        if (!currentPlan) return;
+        const container = document.getElementById('workoutContainer');
+        document.getElementById('workoutPlanName').textContent = currentPlan.name;
+
+        const week = currentPlan.weeks.find(w => w.weekNum === currentWeek) || currentPlan.weeks[0];
+
+        let html = `
+            <div class="card">
+                <div class="card-title">
+                    <span class="icon">📅</span>
+                    Week ${week.weekNum} of ${currentPlan.weeks.length}
+                </div>
+                <div class="week-selector">
+                    ${currentPlan.weeks.map(w => `
+                        <button class="week-btn ${w.weekNum === currentWeek ? 'active' : ''}" onclick="selectWeek(${w.weekNum})">
+                            W${w.weekNum}
+                        </button>
+                    `).join('')}
+                </div>
+                <div class="phase-badge ${week.phase}">${week.phase.replace(/_/g, ' ').toUpperCase()}</div>
+                <div class="day-tabs">
+                    ${week.days.map((d, i) => `
+                        <button class="day-tab ${d.isRest ? 'rest' : ''} ${d.completed ? 'completed' : ''}"
+                            onclick="selectDay(${d.dayNum})">
+                            ${d.isRest ? '😴 Rest' : d.name}
+                        </button>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+
+        // Show current day exercises if a day is selected
+        if (currentDay) {
+            const day = week.days.find(d => d.dayNum === currentDay);
+            if (day) {
+                if (day.isRest) {
+                    html += `
+                        <div class="card">
+                            <div class="card-title"><span class="icon">😴</span>Rest Day</div>
+                            <div class="info-box">
+                                <div class="title">💡 Recovery Tips</div>
+                                <div>Active recovery: light walking, stretching, or mobility work. Aim for 7-9 hours of sleep. Stay hydrated. This is when your muscles actually grow!</div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    const completedSets = day.exercises.reduce((sum, ex) => sum + (ex.completedSets || 0), 0);
+                    const totalSets = day.exercises.reduce((sum, ex) => sum + ex.sets, 0);
+                    const progress = totalSets > 0 ? Math.round((completedSets / totalSets) * 100) : 0;
+
+                    html += `
+                        <div class="workout-progress">
+                            <div class="workout-progress-text">
+                                <span>Workout Progress</span>
+                                <span>${completedSets}/${totalSets} sets</span>
+                            </div>
+                            <div class="workout-progress-bar">
+                                <div class="workout-progress-fill" style="width: ${progress}%"></div>
+                            </div>
+                        </div>
+                    `;
+
+                    if (day.isDeload) {
+                        html += `
+                            <div class="info-box" style="background: linear-gradient(135deg, rgba(16,185,129,0.12), rgba(52,211,153,0.12)); border-color: rgba(16,185,129,0.25);">
+                                <div class="title" style="color: #10b981;">🔄 Deload Week</div>
+                                <div>Reduced volume and intensity. Focus on movement quality and recovery. This week is crucial for long-term progress.</div>
+                            </div>
+                        `;
+                    }
+
+                    // Rest timer
+                    html += `
+                        <div class="rest-timer">
+                            <div class="rest-label">⏱️ Rest Timer</div>
+                            <div class="rest-time" id="restTimerDisplay">${formatTime(day.restBetweenSets || 90)}</div>
+                            <div class="rest-presets">
+                                <button class="rest-preset ${(day.restBetweenSets || 90) === 60 ? 'active' : ''}" onclick="setRestTimer(60)">60s</button>
+                                <button class="rest-preset ${(day.restBetweenSets || 90) === 90 ? 'active' : ''}" onclick="setRestTimer(90)">90s</button>
+                                <button class="rest-preset ${(day.restBetweenSets || 90) === 120 ? 'active' : ''}" onclick="setRestTimer(120)">2m</button>
+                                <button class="rest-preset ${(day.restBetweenSets || 90) === 180 ? 'active' : ''}" onclick="setRestTimer(180)">3m</button>
+                                <button class="rest-preset ${(day.restBetweenSets || 90) === 300 ? 'active' : ''}" onclick="setRestTimer(300)">5m</button>
+                            </div>
+                            <div class="timer-controls" style="margin-top: 12px;">
+                                <button class="timer-btn timer-start" onclick="startRestTimer()">▶️</button>
+                                <button class="timer-btn timer-pause" onclick="pauseRestTimer()">⏸️</button>
+                                <button class="timer-btn timer-reset" onclick="resetRestTimer()">🔄</button>
+                            </div>
+                        </div>
+                    `;
+
+                    // Exercises
+                    day.exercises.forEach((ex, idx) => {
+                        const exData = ExerciseDB[ex.key] || ex;
+                        const isCompleted = ex.completedSets >= ex.sets;
+                        html += `
+                            <div class="exercise-card ${isCompleted ? 'completed' : ''}" id="ex-card-${ex.id}">
+                                <div class="exercise-header">
+                                    <div class="exercise-info">
+                                        <div class="exercise-name">${exData.name}</div>
+                                        <div class="exercise-muscles">${exData.muscles}</div>
+                                    </div>
+                                    <button class="btn btn-secondary btn-small" onclick="openExerciseModal('${ex.id}')">ℹ️</button>
+                                </div>
+                                <div class="set-tracker" id="set-tracker-${ex.id}">
+                                    ${Array.from({length: ex.sets}, (_, i) => `
+                                        <div class="set-dot ${i < (ex.completedSets || 0) ? 'done' : ''} ${i === (ex.completedSets || 0) ? 'current' : ''}"
+                                            onclick="toggleSet('${ex.id}', ${i})">
+                                            ${i + 1}
+                                        </div>
+                                    `).join('')}
+                                </div>
+                                <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+                                    <div style="flex: 1;">
+                                        <div class="form-label" style="font-size: 0.7rem;">Reps</div>
+                                        <div style="font-weight: 700; font-size: 1.1rem;">${ex.reps}</div>
+                                    </div>
+                                    <div style="flex: 1;">
+                                        <div class="form-label" style="font-size: 0.7rem;">RPE</div>
+                                        <div style="font-weight: 700; font-size: 1.1rem;">${ex.rpe}/10</div>
+                                    </div>
+                                    <div style="flex: 1;">
+                                        <div class="form-label" style="font-size: 0.7rem;">Weight</div>
+                                        <input type="number" class="form-input" style="padding: 6px; font-size: 0.9rem; text-align: center;"
+                                            placeholder="kg" step="0.5" value="${ex.loggedWeight || ''}"
+                                            onchange="logWeight('${ex.id}', this.value)" id="weight-${ex.id}">
+                                    </div>
+                                </div>
+                                <div class="exercise-actions">
+                                    <button class="btn btn-success btn-small" onclick="completeSet('${ex.id}')" id="btn-complete-${ex.id}">
+                                        ✅ Complete Set
+                                    </button>
+                                    <button class="btn btn-secondary btn-small" onclick="openExerciseModal('${ex.id}')">
+                                        📹 Details
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                    });
+
+                    html += `
+                        <button class="btn btn-primary" style="margin-bottom: 40px;" onclick="finishWorkout()">
+                            🏁 Finish Workout
+                        </button>
+                    `;
+                }
+            }
+        } else {
+            html += `
+                <div class="card">
+                    <div class="empty-state">
+                        <span class="emoji">👆</span>
+                        Select a day above to view exercises
+                    </div>
+                </div>
+            `;
+        }
+
+        container.innerHTML = html;
+    }
+
+    function selectWeek(weekNum) {
+        currentWeek = weekNum;
+        currentDay = null;
+        renderPlanDetail();
+    }
+
+    function selectDay(dayNum) {
+        currentDay = dayNum;
+        renderPlanDetail();
+    }
+
+    function startWorkout(planId, weekNum, dayNum) {
+        currentPlan = appData.plans.find(p => p.id === planId);
+        currentWeek = weekNum;
+        currentDay = dayNum;
+        renderPlanDetail();
+        switchTab('workout', document.querySelectorAll('.nav-item')[2]);
+    }
+
+    function deletePlan(planId) {
+        if (!confirm('Delete this plan? This cannot be undone.')) return;
+        appData.plans = appData.plans.filter(p => p.id !== planId);
+        saveData();
+        renderPlans();
+        showToast('Plan deleted');
+    }
+
+    // ==================== SET TRACKING ====================
+    function toggleSet(exId, setIndex) {
+        const week = currentPlan.weeks.find(w => w.weekNum === currentWeek);
+        const day = week.days.find(d => d.dayNum === currentDay);
+        const ex = day.exercises.find(e => e.id === exId);
+        if (!ex) return;
+
+        if (setIndex < ex.completedSets) {
+            // Uncheck this and all after
+            ex.completedSets = setIndex;
+        } else {
+            ex.completedSets = setIndex + 1;
+        }
+
+        saveData();
+        renderPlanDetail();
+    }
+
+    function completeSet(exId) {
+        const week = currentPlan.weeks.find(w => w.weekNum === currentWeek);
+        const day = week.days.find(d => d.dayNum === currentDay);
+        const ex = day.exercises.find(e => e.id === exId);
+        if (!ex) return;
+
+        if (ex.completedSets < ex.sets) {
+            ex.completedSets++;
+            saveData();
+            renderPlanDetail();
+
+            // Auto-start rest timer
+            resetRestTimer();
+            startRestTimer();
+
+            if (ex.completedSets >= ex.sets) {
+                showToast(`✅ ${ExerciseDB[ex.key]?.name || ex.name} complete!`);
+            }
+        }
+    }
+
+    function logWeight(exId, weight) {
+        const week = currentPlan.weeks.find(w => w.weekNum === currentWeek);
+        const day = week.days.find(d => d.dayNum === currentDay);
+        const ex = day.exercises.find(e => e.id === exId);
+        if (ex) {
+            ex.loggedWeight = weight;
+            saveData();
+        }
+    }
+
+    function finishWorkout() {
+        const week = currentPlan.weeks.find(w => w.weekNum === currentWeek);
+        const day = week.days.find(d => d.dayNum === currentDay);
+        if (!day) return;
+
+        day.completed = true;
+        day.completedDate = new Date().toISOString();
+
+        // Log workout
+        const workoutLog = {
+            id: 'workout_' + Date.now(),
+            planId: currentPlan.id,
+            planName: currentPlan.name,
+            week: currentWeek,
+            day: currentDay,
+            dayName: day.name,
+            date: new Date().toISOString(),
+            exercises: day.exercises.map(e => ({
+                name: ExerciseDB[e.key]?.name || e.name,
+                sets: e.sets,
+                reps: e.reps,
+                completedSets: e.completedSets,
+                weight: e.loggedWeight
+            })),
+            duration: day.estimatedDuration
+        };
+        appData.workouts.push(workoutLog);
+
+        // Update streak
+        const lastActive = appData.lastActive ? new Date(appData.lastActive) : null;
+        const today = new Date();
+        today.setHours(0,0,0,0);
+        if (lastActive) {
+            lastActive.setHours(0,0,0,0);
+            const diff = (today - lastActive) / (1000 * 60 * 60 * 24);
+            if (diff === 1) {
+                appData.streak++;
+            } else if (diff > 1) {
+                appData.streak = 1;
+            }
+        } else {
+            appData.streak = 1;
+        }
+        appData.lastActive = new Date().toISOString();
+
+        saveData();
+        showToast('🎉 Workout completed! Great job!');
+        renderPlanDetail();
+    }
+
+    // ==================== REST TIMER ====================
+    let restTimerInterval = null;
+    let restTimerSeconds = 90;
+    let restTimerRunning = false;
+
+    function setRestTimer(seconds) {
+        restTimerSeconds = seconds;
+        restTimerRunning = false;
+        clearInterval(restTimerInterval);
+        updateRestTimerDisplay();
+
+        // Update active plan's rest setting
+        if (currentPlan && currentWeek && currentDay) {
+            const week = currentPlan.weeks.find(w => w.weekNum === currentWeek);
+            const day = week.days.find(d => d.dayNum === currentDay);
+            if (day) {
+                day.restBetweenSets = seconds;
+                saveData();
+            }
+        }
+
+        // Update UI
+        document.querySelectorAll('.rest-preset').forEach(btn => {
+            btn.classList.remove('active');
+            if (parseInt(btn.textContent) === seconds ||
+                (btn.textContent.includes('m') && seconds === parseInt(btn.textContent) * 60)) {
+                btn.classList.add('active');
+            }
+        });
+    }
+
+    function startRestTimer() {
+        if (restTimerRunning) return;
+        restTimerRunning = true;
+        restTimerInterval = setInterval(() => {
+            if (restTimerSeconds > 0) {
+                restTimerSeconds--;
+                updateRestTimerDisplay();
+            } else {
+                pauseRestTimer();
+                showToast('⏱️ Rest time is up! Next set!', 'info');
+                // Play a simple beep using Web Audio API
+                try {
+                    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                    const oscillator = audioCtx.createOscillator();
+                    const gainNode = audioCtx.createGain();
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioCtx.destination);
+                    oscillator.frequency.value = 800;
+                    gainNode.gain.value = 0.3;
+                    oscillator.start();
+                    setTimeout(() => oscillator.stop(), 300);
+                } catch(e) {}
+            }
+        }, 1000);
+    }
+
+    function pauseRestTimer() {
+        restTimerRunning = false;
+        clearInterval(restTimerInterval);
+    }
+
+    function resetRestTimer() {
+        pauseRestTimer();
+        if (currentPlan && currentWeek && currentDay) {
+            const week = currentPlan.weeks.find(w => w.weekNum === currentWeek);
+            const day = week.days.find(d => d.dayNum === currentDay);
+            restTimerSeconds = day ? (day.restBetweenSets || 90) : 90;
+        } else {
+            restTimerSeconds = appData.settings?.restDefault || 90;
+        }
+        updateRestTimerDisplay();
+    }
+
+    function updateRestTimerDisplay() {
+        const display = document.getElementById('restTimerDisplay');
+        if (display) {
+            display.textContent = formatTime(restTimerSeconds);
+            if (restTimerSeconds <= 10) {
+                display.style.color = '#ef4444';
+            } else {
+                display.style.color = '#f59e0b';
+            }
+        }
+    }
+
+    function formatTime(seconds) {
+        const m = Math.floor(seconds / 60);
+        const s = seconds % 60;
+        return `${m}:${s.toString().padStart(2, '0')}`;
+    }
+
+    // ==================== EXERCISE MODAL ====================
+    function openExerciseModal(exId) {
+        const week = currentPlan.weeks.find(w => w.weekNum === currentWeek);
+        const day = week.days.find(d => d.dayNum === currentDay);
+        const ex = day.exercises.find(e => e.id === exId);
+        if (!ex) return;
+
+        const exData = ExerciseDB[ex.key];
+        if (!exData) return;
+
+        currentExercise = ex;
+
+        document.getElementById('modalTitle').textContent = exData.name;
+        document.getElementById('modalFigure').textContent = exData.figure || '🏋️';
+        document.getElementById('modalInstructions').innerHTML = exData.instructions.map((inst, i) =>
+            `<div style="margin-bottom: 8px;"><strong>${i + 1}.</strong> ${inst}</div>`
+        ).join('');
+        document.getElementById('modalResearch').textContent = exData.research;
+        document.getElementById('modalYouTube').href = exData.youtube;
+        document.getElementById('modalNotes').value = ex.notes || '';
+
+        document.getElementById('exerciseModal').classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        document.getElementById('exerciseModal').classList.remove('active');
+        document.body.style.overflow = '';
+
+        // Save notes
+        if (currentExercise) {
+            const notes = document.getElementById('modalNotes').value;
+            currentExercise.notes = notes;
+            saveData();
+        }
+        currentExercise = null;
+    }
+
+    function markSetCompleteFromModal() {
+        if (currentExercise) {
+            completeSet(currentExercise.id);
+            closeModal();
+        }
+    }
+
+    // Close modal on overlay click
+    document.getElementById('exerciseModal').addEventListener('click', function(e) {
+        if (e.target === this) closeModal();
+    });
+
+    // ==================== PROGRESS ====================
+    function renderProgress() {
+        // Weight chart
+        const chartContainer = document.getElementById('progressWeightChart');
+        if (appData.weights.length === 0) {
+            chartContainer.innerHTML = `<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #64748b;">No weight data yet</div>`;
+        } else {
+            chartContainer.innerHTML = renderWeightChartSVG();
+        }
+
+        // Workout history
+        const historyList = document.getElementById('workoutHistoryList');
+        if (appData.workouts.length === 0) {
+            historyList.innerHTML = `<div class="empty-state"><span class="emoji">📈</span>No workouts logged yet.<br>Complete a workout to see history here.</div>`;
+        } else {
+            const sorted = [...appData.workouts].sort((a, b) => new Date(b.date) - new Date(a.date));
+            historyList.innerHTML = sorted.slice(0, 20).map(w => {
+                const date = new Date(w.date);
+                const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                const totalSets = w.exercises.reduce((sum, e) => sum + (e.completedSets || 0), 0);
+                return `
+                    <div class="log-entry">
+                        <div class="info">
+                            <div class="name">${w.dayName}</div>
+                            <div class="details">${dateStr} · ${w.planName} · ${totalSets} sets completed</div>
+                        </div>
+                        <div class="check done">✓</div>
+                    </div>
+                `;
+            }).join('');
+        }
+    }
+
+    function renderWeightChartSVG() {
+        const weights = [...appData.weights].sort((a, b) => new Date(a.date) - new Date(b.date));
+        if (weights.length < 2) {
+            return `<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #64748b;">Log at least 2 weights to see chart</div>`;
+        }
+
+        const values = weights.map(w => w.value);
+        const minVal = Math.min(...values) - 1;
+        const maxVal = Math.max(...values) + 1;
+        const range = maxVal - minVal || 1;
+
+        const width = 460;
+        const height = 168;
+        const padding = { top: 10, right: 10, bottom: 30, left: 40 };
+        const chartW = width - padding.left - padding.right;
+        const chartH = height - padding.top - padding.bottom;
+
+        const points = weights.map((w, i) => {
+            const x = padding.left + (i / (weights.length - 1)) * chartW;
+            const y = padding.top + chartH - ((w.value - minVal) / range) * chartH;
+            return `${x},${y}`;
+        }).join(' ');
+
+        const areaPoints = `${padding.left},${padding.top + chartH} ${points} ${padding.left + chartW},${padding.top + chartH}`;
+
+        // Grid lines
+        const gridLines = [];
+        for (let i = 0; i <= 4; i++) {
+            const y = padding.top + (i / 4) * chartH;
+            gridLines.push(`<line x1="${padding.left}" y1="${y}" x2="${width - padding.right}" y2="${y}" class="chart-grid"/>`);
+        }
+
+        // Y-axis labels
+        const yLabels = [];
+        for (let i = 0; i <= 4; i++) {
+            const val = maxVal - (i / 4) * range;
+            const y = padding.top + (i / 4) * chartH;
+            yLabels.push(`<text x="${padding.left - 5}" y="${y + 4}" text-anchor="end" class="chart-label">${val.toFixed(1)}</text>`);
+        }
+
+        // X-axis labels (show first, middle, last)
+        const xLabels = [];
+        const labelIndices = [0, Math.floor(weights.length / 2), weights.length - 1];
+        labelIndices.forEach(i => {
+            const x = padding.left + (i / (weights.length - 1)) * chartW;
+            const date = new Date(weights[i].date);
+            const label = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            xLabels.push(`<text x="${x}" y="${height - 8}" text-anchor="middle" class="chart-label">${label}</text>`);
+        });
+
+        // Data points
+        const dots = weights.map((w, i) => {
+            const x = padding.left + (i / (weights.length - 1)) * chartW;
+            const y = padding.top + chartH - ((w.value - minVal) / range) * chartH;
+            return `<circle cx="${x}" cy="${y}" r="4" class="chart-dot"/>`;
+        }).join('');
+
+        return `
+            <svg class="chart-svg" viewBox="0 0 ${width} ${height}">
+                ${gridLines.join('')}
+                <polygon points="${areaPoints}" class="chart-area"/>
+                <polyline points="${points}" class="chart-line"/>
+                ${dots}
+                ${yLabels.join('')}
+                ${xLabels.join('')}
+            </svg>
+        `;
+    }
+
+    function logProgressWeight() {
+        const input = document.getElementById('progressWeightInput');
+        const val = parseFloat(input.value);
+        if (!val || val <= 0) {
+            showToast('Please enter a valid weight', 'warning');
+            return;
+        }
+
+        appData.weights.push({
+            value: val,
+            date: new Date().toISOString()
+        });
+
+        // Update profile weight
+        appData.profile.weight = val;
+
+        saveData();
+        input.value = '';
+        renderProgress();
+        showToast('Weight logged!');
+    }
+
+    // ==================== SETTINGS ====================
+    function loadSettings() {
+        document.getElementById('set-name').value = appData.profile.name || '';
+        document.getElementById('set-age').value = appData.profile.age || '';
+        document.getElementById('set-weight').value = appData.profile.weight || '';
+        document.getElementById('set-rest').value = appData.settings?.restDefault || 90;
+        document.getElementById('set-alert').value = appData.settings?.alertTime || 45;
+    }
+
+    function saveProfile() {
+        appData.profile.name = document.getElementById('set-name').value;
+        appData.profile.age = parseInt(document.getElementById('set-age').value) || appData.profile.age;
+        appData.profile.weight = parseFloat(document.getElementById('set-weight').value) || appData.profile.weight;
+        saveData();
+        showToast('Profile saved!');
+    }
+
+    function saveSettings() {
+        appData.settings.restDefault = parseInt(document.getElementById('set-rest').value) || 90;
+        appData.settings.alertTime = parseInt(document.getElementById('set-alert').value) || 45;
+        saveData();
+        showToast('Settings saved!');
+    }
+
+    function exportAllData() {
+        const dataStr = JSON.stringify(appData, null, 2);
+        const blob = new Blob([dataStr], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `fitscience_data_${new Date().toISOString().split('T')[0]}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast('Data exported!');
+    }
+
+    function importAllData(input) {
+        const file = input.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const imported = JSON.parse(e.target.result);
+
+                // Validate basic structure
+                if (!imported.plans || !imported.workouts) {
+                    showToast('That does not look like a FitScience backup file.', 'warning');
+                    return;
+                }
+
+                const backupDate = imported.workouts[0]?.date 
+                    ? new Date(imported.workouts[0].date).toLocaleDateString() 
+                    : 'unknown date';
+
+                if (!confirm(`Restore backup from ${backupDate}?
+
+This will replace everything currently in the app.
+
+Plans: ${imported.plans.length}
+Workouts: ${imported.workouts.length}
+Weight entries: ${(imported.weights || []).length}`)) {
+                    input.value = '';
+                    return;
+                }
+
+                appData = imported;
+                saveData();
+
+                // Refresh all views
+                renderDashboard();
+                renderPlans();
+                renderProgress();
+                loadSettings();
+
+                showToast('✅ Your data has been restored!');
+            } catch (err) {
+                showToast('Could not restore — file may be damaged.', 'warning');
+                console.error(err);
+            }
+            input.value = '';
+        };
+        reader.readAsText(file);
+    }
+
+    function clearAllData() {
+        if (!confirm('⚠️ WARNING: This will delete ALL your data permanently. Are you sure?')) return;
+        if (!confirm('Really sure? All plans, workouts, and progress will be gone forever.')) return;
+
+        appData = {
+            profile: {},
+            plans: [],
+            workouts: [],
+            weights: [],
+            settings: { restDefault: 90, alertTime: 45 },
+            streak: 0,
+            lastActive: null
+        };
+        saveData();
+        localStorage.removeItem('fitScienceData');
+        showToast('All data cleared');
+        renderDashboard();
+        renderPlans();
+        renderProgress();
+    }
+
+    // ==================== UTILITY ====================
+    function saveData() {
+        Storage.set('fitScienceData', appData);
+    }
+
+    function showToast(message, type = 'success') {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.className = 'toast show ' + type;
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 3000);
+    }
+
+    
+    // ==================== PWA SERVICE WORKER ====================
+    // NOTE: Service Workers don't work on file:// URLs.
+    // The app works fully offline as a single self-contained file.
+    (function() {
+        var manifest = {
+            name: "FitScience Pro",
+            short_name: "FitScience",
+            description: "Evidence-based workout planning and tracking",
+            start_url: ".",
+            display: "standalone",
+            background_color: "#0a0f1a",
+            theme_color: "#0a0f1a",
+            orientation: "portrait",
+            icons: [
+                {
+                    src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect fill='%236366f1' width='192' height='192' rx='38'/%3E%3Ctext x='96' y='120' font-size='100' text-anchor='middle'%3E🏋️%3C/text%3E%3C/svg%3E",
+                    sizes: "192x192",
+                    type: "image/svg+xml"
+                },
+                {
+                    src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect fill='%236366f1' width='512' height='512' rx='102'/%3E%3Ctext x='256' y='320' font-size='280' text-anchor='middle'%3E🏋️%3C/text%3E%3C/svg%3E",
+                    sizes: "512x512",
+                    type: "image/svg+xml"
+                }
+            ]
+        };
+
+        try {
+            var manifestBlob = new Blob([JSON.stringify(manifest)], { type: "application/json" });
+            var manifestUrl = URL.createObjectURL(manifestBlob);
+            document.getElementById("app-manifest").href = manifestUrl;
+        } catch(e) {}
+    })();
+    // ==================== PWA INSTALL PROMPT ====================
+    let deferredPrompt = null;
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        // Show install prompt after 3 seconds if not already installed
+        setTimeout(() => {
+            if (!window.matchMedia('(display-mode: standalone)').matches && 
+                !window.navigator.standalone) {
+                document.getElementById('installModal').classList.add('active');
+            }
+        }, 3000);
+    });
+
+    function installPWA() {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then(choice => {
+                if (choice.outcome === 'accepted') {
+                    showToast('✅ FitScience Pro installed!');
+                }
+                deferredPrompt = null;
+                document.getElementById('installModal').classList.remove('active');
+            });
+        } else {
+            // Fallback for iOS or browsers without beforeinstallprompt
+            showToast('📱 Tap Share → Add to Home Screen', 'info');
+            document.getElementById('installModal').classList.remove('active');
+        }
+    }
+
+    function dismissInstall() {
+        document.getElementById('installModal').classList.remove('active');
+        localStorage.setItem('fitScienceInstallDismissed', Date.now());
+    }
+
+    // ==================== OFFLINE DETECTION ====================
+    function updateOnlineStatus() {
+        const indicator = document.getElementById('offlineIndicator');
+        if (!navigator.onLine) {
+            indicator.style.transform = 'translateY(0)';
+            setTimeout(() => { indicator.style.transform = 'translateY(-100%)'; }, 4000);
+        }
+    }
+
+    window.addEventListener('online', () => {
+        showToast('🌐 Back online!', 'info');
+    });
+
+    window.addEventListener('offline', updateOnlineStatus);
+
+    // Check if already installed
+    if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+        console.log('FitScience Pro running as installed app');
+    }
+
+    // ==================== INIT ====================
+    function init() {
+        // Load data
+        const saved = Storage.get('fitScienceData');
+        if (saved) {
+            appData = saved;
+        }
+
+        // Set date on dashboard
+        document.getElementById('dashDate').textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+
+        // First-time welcome
+        const hasVisited = localStorage.getItem('fitScienceVisited');
+        if (!hasVisited) {
+            localStorage.setItem('fitScienceVisited', 'true');
+            setTimeout(() => {
+                showToast('👋 Welcome! Your progress saves automatically.', 'info');
+            }, 1000);
+        }
+
+        // If no plans, show onboarding
+        if (appData.plans.length === 0) {
+            switchTab('onboarding', null);
+        } else {
+            renderDashboard();
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+    }
+
+    // Run init when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+    </script>
+
+    <!-- ==================== PWA INSTALL PROMPT ==================== -->
+    <div class="modal-overlay" id="installModal">
+        <div class="modal-content" style="max-width: 360px; text-align: center;">
+            <div class="modal-body">
+                <div style="font-size: 4rem; margin-bottom: 12px;">🏋️</div>
+                <h3 style="margin-bottom: 8px;">Install FitScience Pro</h3>
+                <p style="color: #94a3b8; margin-bottom: 20px;">Add to your home screen for offline access and a native app experience.</p>
+                <button class="btn btn-primary" style="margin-bottom: 8px;" onclick="installPWA()" id="installBtn">
+                    📲 Add to Home Screen
+                </button>
+                <button class="btn btn-outline" style="width: 100%;" onclick="dismissInstall()">
+                    Maybe Later
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== PWA OFFLINE INDICATOR ==================== -->
+    <div id="offlineIndicator" style="position: fixed; top: 0; left: 0; right: 0; background: #f59e0b; color: #0f172a; text-align: center; padding: 6px; font-weight: 600; font-size: 0.8rem; z-index: 3000; transform: translateY(-100%); transition: transform 0.3s;">
+        📡 You're offline — FitScience Pro works offline!
+    </div>
+
+</body>
+</html>
