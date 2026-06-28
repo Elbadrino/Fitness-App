@@ -2,16 +2,29 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="theme-color" content="#0a0f1a">
+
+    <!-- Apple iOS Specific -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="FitScience Pro">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-touch-fullscreen" content="yes">
+
+    <!-- General PWA -->
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="application-name" content="FitScience Pro">
     <meta name="description" content="Evidence-based workout planning and tracking">
+
+    <!-- iOS Splash Screen / Startup Image (prevents white flash) -->
+    <link rel="apple-touch-startup-image" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1170 2532'%3E%3Crect fill='%230a0f1a' width='1170' height='2532'/%3E%3Ctext x='585' y='1266' font-size='200' text-anchor='middle' dominant-baseline='middle'%3E🏋️%3C/text%3E%3Ctext x='585' y='1400' font-size='60' fill='%23e2e8f0' text-anchor='middle' font-family='system-ui'%3EFitScience Pro%3C/text%3E%3C/svg%3E">
+
+    <!-- Icons -->
     <link rel="manifest" id="app-manifest">
     <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect fill='%236366f1' width='192' height='192' rx='38'/%3E%3Ctext x='96' y='120' font-size='100' text-anchor='middle'%3E🏋️%3C/text%3E%3C/svg%3E">
+    <link rel="apple-touch-icon" sizes="152x152" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 152 152'%3E%3Crect fill='%236366f1' width='152' height='152' rx='30'/%3E%3Ctext x='76' y='95' font-size='80' text-anchor='middle'%3E🏋️%3C/text%3E%3C/svg%3E">
+    <link rel="apple-touch-icon" sizes="180x180" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect fill='%236366f1' width='180' height='180' rx='36'/%3E%3Ctext x='90' y='112' font-size='95' text-anchor='middle'%3E🏋️%3C/text%3E%3C/svg%3E">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect fill='%236366f1' width='32' height='32' rx='6'/%3E%3Ctext x='16' y='23' font-size='18' text-anchor='middle'%3E🏋️%3C/text%3E%3C/svg%3E">
     <title>FitScience Pro - Evidence-Based Training</title>
     <style>
